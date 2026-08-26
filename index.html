@@ -360,16 +360,13 @@ footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center
 
 <script>
 /* ============================================================
-   Firebase
-   Console → Project settings → Your apps → Web app → SDK config.
-   Fill this in and Google sign-in plus cloud sync switch on.
-   Leave it empty and everything still works, saved to this browser.
-
-   Also do: Authentication → Sign-in method → enable Google,
-   and Authentication → Settings → add your domain to
-   Authorized domains (localhost + yourname.github.io).
+   Firebase — gpaproject-368dc
+   The web API key below is a public project identifier, not a
+   secret. What actually protects the data is the Firestore rule
+   (each student can only touch students/{their own uid}) plus
+   the Authorized domains list in Authentication → Settings.
    ============================================================ */
-const firebaseConfig = {
+const FIREBASE_CONFIG = window.FIREBASE_CONFIG || {
   apiKey: "AIzaSyDPiWRbd-qO6VUP7wjQJuzioVlC-d_3SKo",
   authDomain: "gpaproject-368dc.firebaseapp.com",
   projectId: "gpaproject-368dc",
@@ -378,7 +375,20 @@ const firebaseConfig = {
   appId: "1:89130836764:web:d7346271e2ea92d31fd0d9",
   measurementId: "G-N4HR3K65WT"
 };
-const firebaseReady = () => Boolean(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
+window.FIREBASE_CONFIG = FIREBASE_CONFIG;
+
+// Resolved through typeof guards: if anything strips or reorders the block
+// above, this returns an empty object instead of throwing a ReferenceError.
+function fbConfig(){
+  try{
+    if(typeof FIREBASE_CONFIG !== "undefined" && FIREBASE_CONFIG) return FIREBASE_CONFIG;
+  }catch(e){}
+  return (window.FIREBASE_CONFIG) || {};
+}
+function firebaseReady(){
+  const c = fbConfig();
+  return Boolean(c.apiKey && c.projectId);
+}
 const SDK = "https://www.gstatic.com/firebasejs/11.0.2";
 
 const LEVELS = [
@@ -932,15 +942,28 @@ document.getElementById("googleBtn").onclick = async () => {
   }
 };
 
+function sdkBase(){
+  try{ if(typeof SDK !== "undefined" && SDK) return SDK; }catch(e){}
+  return "https://www.gstatic.com/firebasejs/11.0.2";
+}
 async function initFirebase(){
   if(!firebaseReady()) return;
+  const base = sdkBase();
   try{
     const [appMod, authMod, dbMod] = await Promise.all([
-      import(`${SDK}/firebase-app.js`),
-      import(`${SDK}/firebase-auth.js`),
-      import(`${SDK}/firebase-firestore.js`)
+      import(`${base}/firebase-app.js`),
+      import(`${base}/firebase-auth.js`),
+      import(`${base}/firebase-firestore.js`)
     ]);
-    const app = appMod.initializeApp(FIREBASE_CONFIG);
+    const app = appMod.initializeApp(fbConfig());
+
+    // Analytics is best-effort: it's blocked inside sandboxed frames and by
+    // plenty of browser extensions, so it must never take the app down.
+    if(fbConfig().measurementId){
+      import(`${base}/firebase-analytics.js`)
+        .then(m => m.isSupported().then(ok => { if(ok) m.getAnalytics(app); }))
+        .catch(() => {});
+    }
     fb = {
       auth: authMod.getAuth(app),
       db: dbMod.getFirestore(app),
