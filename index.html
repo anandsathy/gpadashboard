@@ -141,6 +141,7 @@ svg.chart{width:100%;height:auto;display:block;flex:1}
 .cname .t{min-width:0}
 .cname .t b{display:block;font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cname .t small{color:var(--ink-3);font-size:11.5px}
+.cname .t .linked{color:var(--green);font-weight:600}
 .lvl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 7px;background:#F2F5F3;color:var(--ink-2)}
 .grade{font-family:var(--mono);font-size:19px;text-align:center}
 .math{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);text-align:right;white-space:nowrap}
@@ -327,13 +328,18 @@ footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center
         </div>
         <div class="df">
           <label for="fTerm">Term</label>
-          <select id="fTerm"><option value="S1">Semester 1</option><option value="S2">Semester 2</option></select>
+          <select id="fTerm">
+            <option value="S1">Semester 1</option>
+            <option value="S2">Semester 2</option>
+            <option value="FY">Full year</option>
+          </select>
         </div>
         <div class="df">
-          <label for="fCredits">Credits</label>
-          <input id="fCredits" type="number" step="0.25" min="0" max="4" value="1" />
+          <label for="fCredits" id="fCreditsLabel">Credits</label>
+          <input id="fCredits" type="number" step="0.25" min="0" max="8" value="1" />
         </div>
       </div>
+      <div class="df-note" id="fTermNote" hidden></div>
       <div class="df">
         <label for="fGrade">Grade (percent)</label>
         <input id="fGrade" type="number" step="0.1" min="0" max="110" placeholder="Not graded yet" />
@@ -786,7 +792,7 @@ function renderPanel(){
       row.innerHTML = `
         <div class="cname">
           <span class="swatch" style="background:${l.hex}"></span>
-          <span class="t"><b></b><small>${String(c.credits)} credits</small></span>
+          <span class="t"><b></b><small>${String(c.credits)} credits${siblingOf(c) ? ' · <span class="linked">full year</span>' : ""}</small></span>
         </div>
         <div class="lvlcell"><span class="lvl" style="color:${l.hex};background:${l.hex}14">${l.short}</span></div>
         <div class="gradecell"></div>
@@ -823,16 +829,33 @@ function renderPanel(){
       const [editBtn, delBtn] = row.querySelectorAll(".acts button");
       editBtn.onclick = () => openCourse(c.id);
       delBtn.onclick = () => {
-        state.courses = state.courses.filter(x => x.id !== c.id);
-        save(); render(); toast(`Deleted ${c.name}`);
+        const sib = siblingOf(c);
+        if(sib){
+          const both = confirm(`${c.name} runs both semesters.\n\nOK — delete both\nCancel — delete only semester ${c.term==="S1"?"1":"2"}`);
+          if(both){
+            state.courses = state.courses.filter(x => x.id !== c.id && x.id !== sib.id);
+            toast(`Deleted ${c.name} — both semesters`);
+          } else {
+            state.courses = state.courses.filter(x => x.id !== c.id);
+            delete sib.pairId;
+            toast(`Deleted semester ${c.term==="S1"?"1":"2"} of ${c.name}`);
+          }
+        } else {
+          state.courses = state.courses.filter(x => x.id !== c.id);
+          toast(`Deleted ${c.name}`);
+        }
+        save(); render();
       };
       wrap.appendChild(row);
     });
 
     const add = document.createElement("div");
     add.className = "addrow";
-    add.innerHTML = `<button class="ghost">+ Add a class to ${activeYear}th, semester ${t==="S1"?"1":"2"}</button>`;
-    add.querySelector("button").onclick = () => openCourse(null, {year:activeYear, term:t});
+    add.innerHTML = `<button class="ghost">+ Add to semester ${t==="S1"?"1":"2"}</button>
+                     ${t==="S1" ? `<button class="ghost">+ Add a full-year class</button>` : ""}`;
+    const btns = add.querySelectorAll("button");
+    btns[0].onclick = () => openCourse(null, {year:activeYear, term:t});
+    if(btns[1]) btns[1].onclick = () => openCourse(null, {year:activeYear, term:"FY"});
     wrap.appendChild(add);
     p.appendChild(wrap);
   });
@@ -871,24 +894,54 @@ function selectedLevel(){
 function updateGradeNote(){
   const g = num(document.getElementById("fGrade").value);
   const note = document.getElementById("fGradeNote");
-  if(g === null){ note.textContent = "Leave blank for a class you're planning or still taking."; return; }
+  const fy = document.getElementById("fTerm").value === "FY";
+  if(g === null){
+    note.textContent = fy && !editingId
+      ? "Leave blank to fill both semesters in later."
+      : "Leave blank for a class you're planning or still taking.";
+    return;
+  }
   const bump = state.settings.bumps[selectedLevel()] ?? 0;
   const w = g + bump;
-  note.textContent = `${bandFor(g)[1]} · weighted ${w.toFixed(1)} /100 · ${f2(toGpa(w))} /4.0 · ${f2(toTen(w))} /10`;
+  const scales = `${bandFor(g)[1]} · weighted ${w.toFixed(1)} /100 · ${f2(toGpa(w))} /4.0 · ${f2(toTen(w))} /10`;
+  note.textContent = fy && !editingId ? `${scales} — goes on semester 1; semester 2 stays open.` : scales;
+}
+function updateTermNote(){
+  const fy = document.getElementById("fTerm").value === "FY";
+  const note = document.getElementById("fTermNote");
+  const label = document.getElementById("fCreditsLabel");
+  label.textContent = fy ? "Credits (whole year)" : "Credits";
+  note.hidden = !fy;
+  if(fy){
+    const cr = Math.max(0, Number(document.getElementById("fCredits").value) || 0);
+    note.textContent = editingId
+      ? `Linked across both semesters — ${(cr/2).toFixed(2).replace(/\.?0+$/,"")} credits each. Name, difficulty and credits update in both places; each semester keeps its own grade.`
+      : `Creates one row in each semester — ${(cr/2).toFixed(2).replace(/\.?0+$/,"")} credits each. If your school counts a year-long class as 1.0 per semester, enter 2.`;
+  }
+  updateGradeNote();
 }
 document.getElementById("fGrade").addEventListener("input", updateGradeNote);
+document.getElementById("fTerm").addEventListener("change", updateTermNote);
+document.getElementById("fCredits").addEventListener("input", updateTermNote);
+
+const siblingOf = c => c.pairId ? state.courses.find(x => x.pairId === c.pairId && x.id !== c.id) : null;
+const otherTerm = t => t === "S1" ? "S2" : "S1";
 
 function openCourse(id=null, preset={}){
   editingId = id;
   const c = id ? state.courses.find(x=>x.id===id) : null;
-  document.getElementById("dTitle").textContent = c ? "Edit class" : "Add a class";
+  const sib = c ? siblingOf(c) : null;
+  document.getElementById("dTitle").textContent = c
+    ? (sib ? `Edit class · semester ${c.term==="S1"?"1":"2"}` : "Edit class")
+    : "Add a class";
   document.getElementById("fSave").textContent = c ? "Save changes" : "Add class";
   document.getElementById("fName").value = c ? c.name : "";
   document.getElementById("fYear").value = String(c ? c.year : (preset.year || activeYear));
-  document.getElementById("fTerm").value = c ? c.term : (preset.term || "S1");
-  document.getElementById("fCredits").value = c ? c.credits : 1;
+  document.getElementById("fTerm").value = c ? (sib ? "FY" : c.term) : (preset.term || "S1");
+  document.getElementById("fCredits").value = c ? (sib ? c.credits + sib.credits : c.credits) : 1;
   document.getElementById("fGrade").value = c && isGraded(c) ? num(c.grade) : "";
   buildLevelChips(c ? c.level : "Regular");
+  updateTermNote();
   dlg.showModal();
   setTimeout(()=>document.getElementById("fName").focus(),30);
 }
@@ -897,22 +950,57 @@ document.getElementById("courseForm").addEventListener("submit", e => {
   const name = document.getElementById("fName").value.trim();
   if(!name){ e.preventDefault(); return; }
   const gv = num(document.getElementById("fGrade").value);
-  const data = {
+  const term = document.getElementById("fTerm").value;
+  const fy = term === "FY";
+  const totalCredits = Math.max(0, Number(document.getElementById("fCredits").value) || 0);
+  const shared = {
     name,
     year: Number(document.getElementById("fYear").value),
-    term: document.getElementById("fTerm").value,
-    credits: Math.max(0, Number(document.getElementById("fCredits").value) || 0),
     level: selectedLevel(),
-    grade: gv === null ? null : Math.max(0, Math.min(110, gv))
+    credits: fy ? totalCredits/2 : totalCredits
   };
+  const grade = gv === null ? null : Math.max(0, Math.min(110, gv));
+
   if(editingId){
     const c = state.courses.find(x=>x.id===editingId);
-    Object.assign(c, data);
+    let sib = siblingOf(c);
+    Object.assign(c, shared, {grade});
     if(isGraded(c)) c.sim = null;
-    toast(`Updated ${c.name}`);
+
+    if(fy){
+      if(sib){
+        // Name, level and credits travel; each semester keeps its own grade.
+        Object.assign(sib, shared);
+      } else {
+        const pairId = crypto.randomUUID();
+        c.pairId = pairId;
+        // If an unlinked class with the same name already sits in the other
+        // semester, adopt it rather than creating a duplicate row.
+        const twin = state.courses.find(x =>
+          x.id !== c.id && !x.pairId && x.year === c.year &&
+          x.term === otherTerm(c.term) &&
+          x.name.trim().toLowerCase() === name.toLowerCase());
+        if(twin){ Object.assign(twin, shared, {pairId}); }
+        else state.courses.push(Object.assign({id:crypto.randomUUID(), sim:null, grade:null, pairId, term:otherTerm(c.term)}, shared));
+      }
+      toast(`Updated ${name} — both semesters`);
+    } else {
+      c.term = term;
+      if(sib){ delete sib.pairId; delete c.pairId; toast(`Updated ${name} — no longer linked`); }
+      else toast(`Updated ${name}`);
+    }
+    activeYear = c.year;
+  } else if(fy){
+    const pairId = crypto.randomUUID();
+    state.courses.push(
+      Object.assign({id:crypto.randomUUID(), sim:null, grade, pairId, term:"S1"}, shared),
+      Object.assign({id:crypto.randomUUID(), sim:null, grade:null, pairId, term:"S2"}, shared)
+    );
+    activeYear = shared.year;
+    toast(`Added ${name} to both semesters`);
   } else {
-    state.courses.push(Object.assign({id:crypto.randomUUID(), sim:null}, data));
-    activeYear = data.year;
+    state.courses.push(Object.assign({id:crypto.randomUUID(), sim:null, grade, term}, shared));
+    activeYear = shared.year;
     toast(`Added ${name}`);
   }
   save(); render();
@@ -958,12 +1046,17 @@ function toast(msg){
   clearTimeout(toastT); toastT = setTimeout(()=>el.classList.remove("on"), 2200);
 }
 function loadSample(){
-  const mk = (name,level,term,grade,credits=1) => ({id:crypto.randomUUID(),name,level,year:9,term,credits,grade,sim:null});
+  const mk = (name,level,term,grade,credits=0.5,pairId=null) =>
+    Object.assign({id:crypto.randomUUID(),name,level,year:9,term,credits,grade,sim:null}, pairId?{pairId}:{});
+  const yearLong = (name,level,g1,g2) => {
+    const pairId = crypto.randomUUID();
+    return [mk(name,level,"S1",g1,0.5,pairId), mk(name,level,"S2",g2,0.5,pairId)];
+  };
   state.courses.push(
-    mk("Honors Biology","Honors","S1",91), mk("Honors Biology","Honors","S2",93),
-    mk("Geometry","Regular","S1",88), mk("Geometry","Regular","S2",90),
-    mk("World Literature","Regular","S1",94), mk("World Literature","Regular","S2",95),
-    mk("AP Human Geography","AP","S1",89), mk("AP Human Geography","AP","S2",92),
+    ...yearLong("Honors Biology","Honors",91,93),
+    ...yearLong("Geometry","Regular",88,90),
+    ...yearLong("World Literature","Regular",94,95),
+    ...yearLong("AP Human Geography","AP",89,92),
     mk("Spanish II","Regular","S1",93,0.5)
   );
   activeYear = 9; save(); render(); toast("Sample year loaded — edit or delete anything");
