@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Four Years — GPA tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14151C;
+  --ink-2:#565C75;
+  --ink-3:#8A90A8;
+  --paper:#EFF2F9;
+  --card:#FFFFFF;
+  --line:#E1E6F3;
+  --line-2:#CDD5EA;
+  --brand:#3A32D8;
+  --brand-soft:#EDECFE;
+  --reg:#7B85A6;
+  --hon:#0FA9A4;
+  --ap:#7B4FFF;
+  --ib:#E08A00;
+  --good:#12996E;
+  --warn:#DB4A32;
+  --r-lg:20px;
+  --r-md:14px;
+  --r-sm:10px;
+  --shadow:0 1px 2px rgba(20,21,28,.05), 0 8px 24px -16px rgba(20,21,28,.24);
+  --display:"Bricolage Grotesque","Public Sans",system-ui,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,sans-serif;
+  --mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 31px,rgba(58,50,216,.045) 31px 32px);
+}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.02em}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:40;background:rgba(239,242,249,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:14px;height:62px}
+.mark{display:flex;align-items:baseline;gap:9px;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.03em}
+.mark i{width:10px;height:10px;border-radius:3px;background:var(--brand);display:block;transform:translateY(-1px)}
+.mark span{color:var(--ink-3);font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.bar .sp{flex:1}
+.ghost{background:transparent;border:1px solid var(--line-2);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+.solid{background:var(--brand);color:#fff;border:0;border-radius:999px;padding:9px 17px;font-size:13.5px;font-weight:600}
+.solid:hover{background:#2f28bd}
+.sync{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--ink-3);white-space:nowrap}
+.sync::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ink-3)}
+.sync[data-kind="ok"]{color:var(--good)}
+.sync[data-kind="ok"]::before{background:var(--good)}
+.sync[data-kind="saving"]::before{background:var(--brand)}
+.sync[data-kind="offline"]{color:var(--warn)}
+.sync[data-kind="offline"]::before{background:var(--warn)}
+@media (max-width:640px){.sync{display:none}}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;font-weight:700;font-size:13px;border:1px solid var(--line-2);overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:28px;padding:34px 0 10px;align-items:stretch}
+.readout{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.readout .big{font-family:var(--mono);font-size:clamp(56px,11vw,76px);line-height:.94;font-weight:500;letter-spacing:-.05em;margin:10px 0 2px}
+.readout .big.proj{color:var(--brand)}
+.readout .sub{color:var(--ink-2);font-size:13.5px}
+.readout .sub b{font-family:var(--mono);color:var(--ink);font-weight:500}
+.delta{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:999px;padding:3px 9px;background:var(--brand-soft);color:var(--brand);font-family:var(--mono)}
+.split{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line-2);display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.split div .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.split div .v{font-family:var(--mono);font-size:22px;letter-spacing:-.03em}
+
+.ribbon{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 18px 8px;box-shadow:var(--shadow);min-height:250px;display:flex;flex-direction:column}
+.ribbon-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.ribbon-head h3{font-size:15px;font-weight:700}
+.legend{display:flex;gap:14px;margin-left:auto;flex-wrap:wrap}
+.legend b{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--ink-2)}
+.legend i{width:14px;height:3px;border-radius:2px;display:block}
+svg.chart{width:100%;height:auto;display:block;flex:1}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:16px 0 6px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 18px;box-shadow:var(--shadow)}
+.stat .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.stat .v{font-family:var(--mono);font-size:28px;letter-spacing:-.03em;margin-top:4px}
+.stat .n{font-size:12.5px;color:var(--ink-2);margin-top:2px}
+.track{height:7px;border-radius:99px;background:var(--paper);border:1px solid var(--line);margin-top:12px;position:relative;overflow:hidden}
+.track em{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--brand),var(--hon));border-radius:99px}
+
+/* ---------- coursework ---------- */
+.section-head{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;padding:34px 0 14px}
+.section-head h2{font-size:26px;font-weight:800}
+.section-head p{margin:2px 0 0;color:var(--ink-2);font-size:13.5px;max-width:46ch}
+.section-head .sp{flex:1}
+.switch{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--ink-2);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 8px}
+.switch input{appearance:none;width:34px;height:20px;border-radius:99px;background:var(--line-2);position:relative;transition:background .18s;margin:0}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .18s}
+.switch input:checked{background:var(--brand)}
+.switch input:checked::after{transform:translateX(14px)}
+
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.tab{white-space:nowrap;border:1px solid var(--line);border-bottom:0;background:#F7F9FE;color:var(--ink-2);padding:10px 16px 12px;border-radius:12px 12px 0 0;font-size:13.5px;font-weight:600;position:relative;top:1px}
+.tab .g{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-left:7px}
+.tab[aria-selected="true"]{background:var(--card);color:var(--ink);border-color:var(--line);box-shadow:0 -3px 0 var(--brand) inset}
+.tab[aria-selected="true"] .g{color:var(--brand)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:0 var(--r-lg) var(--r-lg) var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
+
+.term{border-bottom:1px solid var(--line)}
+.term:last-child{border-bottom:0}
+.term-head{display:flex;align-items:center;gap:12px;padding:14px 20px;background:#FAFBFF;border-bottom:1px solid var(--line)}
+.term-head h4{margin:0;font-family:var(--display);font-size:14px;font-weight:700}
+.term-head .sp{flex:1}
+.pill{font-family:var(--mono);font-size:12px;color:var(--ink-2);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.pill b{color:var(--ink);font-weight:500}
+
+.row{display:grid;grid-template-columns:1fr 92px 118px 96px 74px;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row:hover{background:#FBFCFF}
+.cname{display:flex;align-items:center;gap:10px;min-width:0}
+.cname .swatch{width:4px;height:26px;border-radius:99px;flex:none}
+.cname .t{min-width:0}
+.cname .t b{display:block;font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cname .t small{color:var(--ink-3);font-size:11.5px}
+.lvl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 7px;background:#F3F5FB;color:var(--ink-2)}
+.grade{font-family:var(--mono);font-size:19px;text-align:center}
+.grade.none{color:var(--ink-3)}
+.gpt{font-family:var(--mono);font-size:13px;color:var(--ink-2);text-align:right}
+.sim-select{width:100%;font-family:var(--mono);font-size:14px;text-align:center;border:1px dashed var(--brand);color:var(--brand);background:var(--brand-soft);border-radius:8px;padding:5px 4px}
+.acts{display:flex;gap:6px;justify-content:flex-end}
+.icon{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;color:var(--ink-2)}
+.icon:hover{border-color:var(--ink-3);color:var(--ink)}
+.icon.del:hover{border-color:var(--warn);color:var(--warn)}
+.icon svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.addrow{padding:16px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#FAFBFF}
+.empty{padding:46px 24px;text-align:center}
+.empty h3{font-size:19px;margin-bottom:6px}
+.empty p{color:var(--ink-2);margin:0 auto 18px;max-width:40ch;font-size:14px}
+
+/* ---------- modal ---------- */
+dialog{border:0;padding:0;border-radius:var(--r-lg);box-shadow:0 30px 70px -20px rgba(20,21,28,.45);width:min(520px,calc(100vw - 32px));background:var(--card)}
+dialog::backdrop{background:rgba(20,21,28,.42);backdrop-filter:blur(3px)}
+.dh{padding:20px 22px 4px}
+.dh h3{font-size:20px;font-weight:800}
+.dh p{margin:4px 0 0;color:var(--ink-2);font-size:13.5px}
+.db{padding:16px 22px 4px;display:grid;gap:14px}
+.df{display:grid;gap:6px}
+.df label{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink-3)}
+.df input,.df select{border:1px solid var(--line-2);border-radius:var(--r-sm);padding:10px 12px;background:#fff;width:100%}
+.df input:focus,.df select:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:transparent}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line-2);background:#fff;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.chip[aria-pressed="true"]{color:#fff;border-color:transparent}
+.df-note{font-size:12.5px;color:var(--ink-3)}
+.dfoot{padding:18px 22px 20px;display:flex;gap:10px;align-items:center;border-top:1px solid var(--line);margin-top:16px}
+.dfoot .sp{flex:1}
+
+/* ---------- sign in ---------- */
+.gate{position:fixed;inset:0;z-index:80;background:var(--paper);display:grid;place-items:center;padding:24px;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 31px,rgba(58,50,216,.05) 31px 32px)}
+.gate .box{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);max-width:420px;width:100%;padding:34px 30px;text-align:center}
+.gate h1{font-size:30px;font-weight:800;line-height:1.08;margin-bottom:10px}
+.gate h1 em{font-style:normal;color:var(--brand)}
+.gate p{color:var(--ink-2);font-size:14px;margin:0 0 22px}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid var(--line-2);border-radius:12px;padding:12px;font-weight:600;font-size:14.5px;box-shadow:0 1px 2px rgba(20,21,28,.06)}
+.gbtn:hover{background:#FAFBFF}
+.gate .or{display:flex;align-items:center;gap:12px;color:var(--ink-3);font-size:12px;margin:16px 0}
+.gate .or::before,.gate .or::after{content:"";height:1px;background:var(--line);flex:1}
+.gate input{width:100%;border:1px solid var(--line-2);border-radius:12px;padding:12px;text-align:center;margin-bottom:10px}
+.gate small{display:block;color:var(--ink-3);font-size:11.5px;margin-top:16px;line-height:1.5}
+
+footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:.22s;z-index:90}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:880px){
+  .hero{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr 84px;grid-template-areas:"name grade" "meta acts";row-gap:8px}
+  .row .cname{grid-area:name}
+  .row .gradecell{grid-area:grade}
+  .row .lvlcell{grid-area:meta;display:flex;gap:8px;align-items:center}
+  .row .gpt{grid-area:meta;text-align:left;justify-self:end}
+  .row .acts{grid-area:acts}
+  .grid3{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="box">
+    <div class="mark" style="justify-content:center;margin-bottom:16px"><i></i>Four Years<span>gpa</span></div>
+    <h1>Every class you take,<br><em>one number</em>.</h1>
+    <p>Track grades 9 through 12. Weighted and unweighted, by semester, by year, and all four years together.</p>
+    <button class="gbtn" id="googleBtn">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+      Continue with Google
+    </button>
+    <div class="or">or</div>
+    <input id="localName" placeholder="Your first name" autocomplete="given-name" />
+    <button class="solid" style="width:100%;border-radius:12px;padding:12px" id="localBtn">Keep it on this device</button>
+    <small id="gateNote">Google sign-in needs your Firebase config. Until it's added, this saves your coursework to this browser.</small>
+  </div>
+</div>
+
+<header>
+  <div class="wrap bar">
+    <div class="mark"><i></i>Four Years<span>gpa</span></div>
+    <div class="sp"></div>
+    <span class="sync" id="sync" data-kind="local" hidden></span>
+    <button class="ghost" id="settingsBtn">Scale &amp; target</button>
+    <button class="solid" id="addBtn">Add a class</button>
+    <button class="avatar" id="me" title="Account"></button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="readout">
+      <div class="eyebrow">Cumulative weighted</div>
+      <div class="big num" id="cumW">—</div>
+      <div id="deltaWrap"></div>
+      <div class="sub" style="margin-top:8px">Unweighted <b id="cumU">—</b> · <span id="courseCount">no classes yet</span></div>
+      <div class="split">
+        <div><div class="k">Credits earned</div><div class="v num" id="credEarned">0</div></div>
+        <div><div class="k">In progress</div><div class="v num" id="credOpen">0</div></div>
+      </div>
+    </div>
+
+    <div class="ribbon">
+      <div class="ribbon-head">
+        <h3>Eight semesters</h3>
+        <div class="legend">
+          <b><i style="background:var(--brand)"></i>Weighted</b>
+          <b><i style="background:var(--ink-3)"></i>Unweighted</b>
+          <b><i style="background:var(--good);opacity:.6"></i>Target</b>
+        </div>
+      </div>
+      <svg class="chart" id="chart" viewBox="0 0 720 250" preserveAspectRatio="xMidYMid meet" role="img" aria-label="GPA by semester"></svg>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <div class="k">Target GPA</div>
+      <div class="v num" id="targetVal">4.00</div>
+      <div class="n" id="targetNote">Set a goal to see how close you are.</div>
+      <div class="track"><em id="targetBar" style="width:0"></em></div>
+    </div>
+    <div class="stat">
+      <div class="k">Best semester</div>
+      <div class="v num" id="bestSem">—</div>
+      <div class="n" id="bestSemNote">Add graded classes to compare terms.</div>
+    </div>
+    <div class="stat">
+      <div class="k">Course load</div>
+      <div class="v num" id="loadVal">—</div>
+      <div class="n" id="loadNote">Honors, AP and IB classes lift your weighted GPA.</div>
+    </div>
+  </section>
+
+  <div class="section-head">
+    <div>
+      <h2>Coursework</h2>
+      <p>Leave a grade blank to plan ahead — then give it a projected grade and watch the whole page respond.</p>
+    </div>
+    <div class="sp"></div>
+    <label class="switch"><input type="checkbox" id="simToggle" /> Count projected grades</label>
+  </div>
+
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div class="panel" id="panel"></div>
+
+  <footer>Built for grades 9–12. Your coursework stays in this browser unless you connect an account.</footer>
+</main>
+
+<dialog id="courseDialog">
+  <form method="dialog" id="courseForm">
+    <div class="dh"><h3 id="dTitle">Add a class</h3><p>Credits are usually 1.0 for a year-long class, 0.5 for a semester.</p></div>
+    <div class="db">
+      <div class="df">
+        <label for="fName">Class name</label>
+        <input id="fName" required maxlength="60" placeholder="AP World History" />
+      </div>
+      <div class="df">
+        <label>Difficulty</label>
+        <div class="chips" id="fLevel"></div>
+      </div>
+      <div class="grid3">
+        <div class="df">
+          <label for="fYear">Grade level</label>
+          <select id="fYear"><option value="9">9th</option><option value="10">10th</option><option value="11">11th</option><option value="12">12th</option></select>
+        </div>
+        <div class="df">
+          <label for="fTerm">Term</label>
+          <select id="fTerm"><option value="S1">Semester 1</option><option value="S2">Semester 2</option></select>
+        </div>
+        <div class="df">
+          <label for="fCredits">Credits</label>
+          <input id="fCredits" type="number" step="0.25" min="0" max="4" value="1" />
+        </div>
+      </div>
+      <div class="df">
+        <label for="fGrade">Grade</label>
+        <select id="fGrade"></select>
+        <div class="df-note">Choose “Not graded yet” for a class you’re planning or still taking.</div>
+      </div>
+    </div>
+    <div class="dfoot">
+      <button class="ghost" type="button" id="fCancel">Cancel</button>
+      <div class="sp"></div>
+      <button class="solid" type="submit" id="fSave">Save class</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="settingsDialog">
+  <form method="dialog" id="settingsForm">
+    <div class="dh"><h3>Scale &amp; target</h3><p>Schools weight courses differently. Match yours here.</p></div>
+    <div class="db">
+      <div class="df">
+        <label for="sTarget">Target cumulative GPA (weighted)</label>
+        <input id="sTarget" type="number" step="0.01" min="0" max="6" />
+      </div>
+      <div class="df"><label>Extra points added to a passing grade</label></div>
+      <div class="grid3">
+        <div class="df"><label for="sHon">Honors</label><input id="sHon" type="number" step="0.05" min="0" max="2" /></div>
+        <div class="df"><label for="sAp">AP</label><input id="sAp" type="number" step="0.05" min="0" max="2" /></div>
+        <div class="df"><label for="sIb">IB</label><input id="sIb" type="number" step="0.05" min="0" max="2" /></div>
+      </div>
+      <div class="df-note">Regular classes are never weighted. A failing grade stays at 0.00 on both scales.</div>
+    </div>
+    <div class="dfoot">
+      <button class="ghost" type="button" id="sReset">Erase all data</button>
+      <div class="sp"></div>
+      <button class="solid" type="submit">Save settings</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   Firebase
+   Console → Project settings → Your apps → Web app → SDK config.
+   Fill this in and Google sign-in plus cloud sync switch on.
+   Leave it empty and everything still works, saved to this browser.
+
+   Also do: Authentication → Sign-in method → enable Google,
+   and Authentication → Settings → add your domain to
+   Authorized domains (localhost + yourname.github.io).
+   ============================================================ */
+const FIREBASE_CONFIG = {
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  appId: ""
+};
+const firebaseReady = () => Boolean(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
+const SDK = "https://www.gstatic.com/firebasejs/11.0.2";
+
+const LEVELS = [
+  {id:"Regular", short:"REG", color:"var(--reg)",  hex:"#7B85A6"},
+  {id:"Honors",  short:"HON", color:"var(--hon)",  hex:"#0FA9A4"},
+  {id:"AP",      short:"AP",  color:"var(--ap)",   hex:"#7B4FFF"},
+  {id:"IB",      short:"IB",  color:"var(--ib)",   hex:"#E08A00"}
+];
+const GRADES = [
+  ["A+",4.0],["A",4.0],["A-",3.7],
+  ["B+",3.3],["B",3.0],["B-",2.7],
+  ["C+",2.3],["C",2.0],["C-",1.7],
+  ["D+",1.3],["D",1.0],["D-",0.7],
+  ["F",0.0]
+];
+const GMAP = Object.fromEntries(GRADES);
+const YEARS = [9,10,11,12];
+const TERMS = ["S1","S2"];
+const SEMS = YEARS.flatMap(y => TERMS.map(t => ({y,t,key:y+t,label:`${y}·${t==="S1"?"1":"2"}`})));
+
+const DEFAULTS = {
+  courses: [],
+  settings: {target:4.0, bumps:{Regular:0,Honors:0.5,AP:1,IB:1}},
+  profile: {name:null,email:null,picture:null},
+  sim: false
+};
+let state = structuredClone(DEFAULTS);
+let activeYear = 9;
+let editingId = null;
+let memoryOnly = false;
+
+/* ---------- storage ----------
+   Three backends, picked at runtime:
+   1. Firestore, once you're signed in (syncs across devices)
+   2. window.storage, inside Claude's artifact preview
+   3. localStorage, everywhere else
+   Local always writes too, so the app opens instantly and works offline. */
+const KEY = "fouryears:v1";
+let cloud = null;          // {ref, setDoc} once signed in
+let cloudTimer = null;
+let applyingRemote = false;
+
+function hydrate(parsed){
+  const next = Object.assign(structuredClone(DEFAULTS), parsed);
+  next.settings = Object.assign(structuredClone(DEFAULTS.settings), parsed.settings||{});
+  next.settings.bumps = Object.assign(structuredClone(DEFAULTS.settings.bumps), (parsed.settings||{}).bumps||{});
+  next.profile = Object.assign(structuredClone(DEFAULTS.profile), parsed.profile||{});
+  return next;
+}
+const payload = () => ({courses: state.courses, settings: state.settings, sim: state.sim, updatedAt: Date.now()});
+
+async function saveLocal(){
+  const json = JSON.stringify(state);
+  try{
+    if(window.storage && window.storage.set){ await window.storage.set(KEY, json); return; }
+  }catch(e){ /* fall through */ }
+  try{ localStorage.setItem(KEY, json); }
+  catch(e){ memoryOnly = true; setSync("offline", "Saved for this session only"); }
+}
+async function loadLocal(){
+  let raw = null;
+  try{
+    if(window.storage && window.storage.get){
+      const r = await window.storage.get(KEY);
+      raw = r && r.value;
+    }
+  }catch(e){ /* key missing or unsupported */ }
+  if(raw === null){
+    try{ raw = localStorage.getItem(KEY); }catch(e){}
+  }
+  if(!raw) return;
+  try{ state = hydrate(JSON.parse(raw)); }catch(e){}
+}
+
+function save(){
+  saveLocal();
+  if(cloud && !applyingRemote){
+    setSync("saving", "Saving…");
+    clearTimeout(cloudTimer);
+    cloudTimer = setTimeout(async () => {
+      try{
+        await cloud.setDoc(cloud.ref, payload(), {merge:true});
+        setSync("ok", "Synced");
+      }catch(e){
+        setSync("offline", "Couldn't reach the cloud — saved on this device");
+      }
+    }, 600);
+  }
+}
+
+function setSync(kind, label){
+  const el = document.getElementById("sync");
+  if(!el) return;
+  el.dataset.kind = kind;
+  el.textContent = label;
+  el.hidden = false;
+}
+
+/* ---------- math ---------- */
+const isGraded = c => c.grade && c.grade in GMAP;
+const isSim    = c => !isGraded(c) && c.sim && c.sim in GMAP;
+const counts   = c => isGraded(c) || (state.sim && isSim(c));
+const gradeOf  = c => isGraded(c) ? c.grade : c.sim;
+
+function points(c, weighted){
+  const base = GMAP[gradeOf(c)];
+  if(base === undefined) return null;
+  if(!weighted || base === 0) return base;
+  return base + (state.settings.bumps[c.level] || 0);
+}
+function gpa(list, weighted){
+  let qp = 0, cr = 0;
+  list.filter(counts).forEach(c => {
+    const p = points(c, weighted);
+    if(p === null) return;
+    qp += p * c.credits; cr += c.credits;
+  });
+  return cr ? {gpa: qp/cr, credits: cr, qp} : null;
+}
+const fmt = n => n === null || n === undefined ? "—" : n.toFixed(2);
+const semCourses = (y,t) => state.courses.filter(c => c.year===y && c.term===t);
+const yearCourses = y => state.courses.filter(c => c.year===y);
+
+/* ---------- render ---------- */
+function render(){
+  renderHero();
+  renderStats();
+  renderChart();
+  renderTabs();
+  renderPanel();
+  renderMe();
+}
+
+function renderHero(){
+  const all = state.courses;
+  const w = gpa(all,true), u = gpa(all,false);
+  document.getElementById("cumW").textContent = w ? fmt(w.gpa) : "—";
+  document.getElementById("cumU").textContent = u ? fmt(u.gpa) : "—";
+  document.getElementById("cumW").classList.toggle("proj", state.sim && all.some(isSim));
+
+  const graded = all.filter(isGraded);
+  const open = all.filter(c => !isGraded(c));
+  document.getElementById("credEarned").textContent = graded.reduce((s,c)=>s+c.credits,0).toFixed(1);
+  document.getElementById("credOpen").textContent = open.reduce((s,c)=>s+c.credits,0).toFixed(1);
+  document.getElementById("courseCount").textContent =
+    all.length ? `${all.length} class${all.length>1?"es":""} across ${new Set(all.map(c=>c.year)).size} year${new Set(all.map(c=>c.year)).size>1?"s":""}` : "no classes yet";
+
+  // delta from projections
+  const dw = document.getElementById("deltaWrap");
+  dw.innerHTML = "";
+  const actual = gpa(all.filter(isGraded), true);
+  if(state.sim && w && actual){
+    const d = w.gpa - actual.gpa;
+    if(Math.abs(d) >= 0.005){
+      const s = document.createElement("span");
+      s.className = "delta";
+      s.textContent = `${d>0?"+":"−"}${Math.abs(d).toFixed(2)} vs. graded only`;
+      dw.appendChild(s);
+    }
+  }
+}
+
+function renderStats(){
+  const t = state.settings.target;
+  document.getElementById("targetVal").textContent = t.toFixed(2);
+  const cur = gpa(state.courses,true);
+  const bar = document.getElementById("targetBar");
+  const note = document.getElementById("targetNote");
+  if(cur){
+    bar.style.width = Math.max(2, Math.min(100, (cur.gpa/t)*100)) + "%";
+    const graded = gpa(state.courses.filter(isGraded), true);
+    const remaining = state.courses.filter(c => !isGraded(c)).reduce((s,c)=>s+c.credits,0);
+    if(graded && remaining > 0){
+      const need = (t*(graded.credits+remaining) - graded.qp) / remaining;
+      note.textContent = need <= 0
+        ? "Already past your target with the grades you have."
+        : need > 5.5
+          ? `Out of reach with ${remaining.toFixed(1)} credits left — try nudging the target.`
+          : `Average ${need.toFixed(2)} across your last ${remaining.toFixed(1)} credits to land on it.`;
+    } else {
+      const gap = t - cur.gpa;
+      note.textContent = gap <= 0 ? "You're at or above your target." : `${gap.toFixed(2)} below target right now.`;
+    }
+  } else {
+    bar.style.width = "0";
+    note.textContent = "Set a goal to see how close you are.";
+  }
+
+  let best = null;
+  SEMS.forEach(s => {
+    const g = gpa(semCourses(s.y,s.t), true);
+    if(g && (!best || g.gpa > best.g.gpa)) best = {s,g};
+  });
+  document.getElementById("bestSem").textContent = best ? fmt(best.g.gpa) : "—";
+  document.getElementById("bestSemNote").textContent = best
+    ? `${best.s.y}th grade, semester ${best.s.t==="S1"?"1":"2"}`
+    : "Add graded classes to compare terms.";
+
+  const counted = state.courses.filter(counts);
+  const rigorous = counted.filter(c => c.level !== "Regular");
+  document.getElementById("loadVal").textContent = counted.length ? `${rigorous.length}/${counted.length}` : "—";
+  document.getElementById("loadNote").textContent = counted.length
+    ? `${rigorous.length} weighted ${rigorous.length===1?"class":"classes"} of ${counted.length} counted`
+    : "Honors, AP and IB classes lift your weighted GPA.";
+}
+
+function renderChart(){
+  const svg = document.getElementById("chart");
+  const W=720,H=250,L=42,R=16,T=16,B=34;
+  const pts = SEMS.map(s => {
+    const list = semCourses(s.y,s.t);
+    const w = gpa(list,true), u = gpa(list,false);
+    const projected = list.filter(counts).some(isSim);
+    return {s, w:w?w.gpa:null, u:u?u.gpa:null, projected};
+  });
+  const vals = pts.flatMap(p => [p.w,p.u]).filter(v => v!==null).concat([state.settings.target]);
+  const lo = vals.length ? Math.max(0, Math.floor((Math.min(...vals)-.3)*2)/2) : 2;
+  const hi = vals.length ? Math.min(6, Math.ceil((Math.max(...vals)+.3)*2)/2) : 5;
+  const span = Math.max(0.5, hi-lo);
+  const x = i => L + i*((W-L-R)/(SEMS.length-1));
+  const y = v => T + (1-(v-lo)/span)*(H-T-B);
+
+  let g = "";
+  // grid
+  for(let k=0;k<=4;k++){
+    const v = lo + (span*k/4), yy = y(v);
+    g += `<line x1="${L}" x2="${W-R}" y1="${yy.toFixed(1)}" y2="${yy.toFixed(1)}" stroke="#E1E6F3" stroke-width="1"/>`;
+    g += `<text x="${L-9}" y="${(yy+4).toFixed(1)}" text-anchor="end" font-family="DM Mono, monospace" font-size="11" fill="#8A90A8">${v.toFixed(1)}</text>`;
+  }
+  // year separators + labels
+  YEARS.forEach((yr,i) => {
+    if(i>0){ const xx=(x(i*2-1)+x(i*2))/2; g += `<line x1="${xx.toFixed(1)}" x2="${xx.toFixed(1)}" y1="${T}" y2="${H-B}" stroke="#E1E6F3" stroke-dasharray="2 4"/>`; }
+    const cx = (x(i*2)+x(i*2+1))/2;
+    g += `<text x="${cx.toFixed(1)}" y="${H-10}" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="11.5" font-weight="600" fill="#565C75">${yr}th grade</text>`;
+  });
+  // target
+  if(state.settings.target >= lo && state.settings.target <= hi){
+    const ty = y(state.settings.target);
+    g += `<line x1="${L}" x2="${W-R}" y1="${ty.toFixed(1)}" y2="${ty.toFixed(1)}" stroke="#12996E" stroke-width="1.5" stroke-dasharray="6 5" opacity=".7"/>`;
+    g += `<text x="${W-R}" y="${(ty-7).toFixed(1)}" text-anchor="end" font-family="Public Sans" font-size="10.5" font-weight="700" fill="#12996E">TARGET</text>`;
+  }
+
+  function series(key,color,width){
+    let out = "";
+    for(let i=0;i<pts.length-1;i++){
+      const a=pts[i], b=pts[i+1];
+      if(a[key]===null || b[key]===null) continue;
+      const dash = (a.projected||b.projected) ? ' stroke-dasharray="5 5"' : "";
+      out += `<line x1="${x(i).toFixed(1)}" y1="${y(a[key]).toFixed(1)}" x2="${x(i+1).toFixed(1)}" y2="${y(b[key]).toFixed(1)}" stroke="${color}" stroke-width="${width}" stroke-linecap="round"${dash}/>`;
+    }
+    pts.forEach((p,i) => {
+      if(p[key]===null) return;
+      out += p.projected
+        ? `<circle cx="${x(i).toFixed(1)}" cy="${y(p[key]).toFixed(1)}" r="4.5" fill="#fff" stroke="${color}" stroke-width="2"/>`
+        : `<circle cx="${x(i).toFixed(1)}" cy="${y(p[key]).toFixed(1)}" r="4.5" fill="${color}"/>`;
+    });
+    return out;
+  }
+  g += series("u","#8A90A8",2);
+  g += series("w","#3A32D8",2.75);
+
+  // value label on latest weighted point
+  const last = [...pts].reverse().find(p => p.w!==null);
+  if(last){
+    const i = pts.indexOf(last);
+    g += `<text x="${x(i).toFixed(1)}" y="${(y(last.w)-13).toFixed(1)}" text-anchor="middle" font-family="DM Mono, monospace" font-size="13" fill="#3A32D8">${last.w.toFixed(2)}</text>`;
+  } else {
+    g += `<text x="${W/2}" y="${H/2}" text-anchor="middle" font-family="Public Sans" font-size="13.5" fill="#8A90A8">Your line starts with your first graded class.</text>`;
+  }
+  svg.innerHTML = g;
+}
+
+function renderTabs(){
+  const el = document.getElementById("tabs");
+  el.innerHTML = "";
+  YEARS.forEach(y => {
+    const g = gpa(yearCourses(y), true);
+    const b = document.createElement("button");
+    b.className = "tab"; b.role = "tab";
+    b.setAttribute("aria-selected", String(y===activeYear));
+    b.innerHTML = `${y}th grade <span class="g">${g?fmt(g.gpa):"—"}</span>`;
+    b.onclick = () => { activeYear = y; renderTabs(); renderPanel(); };
+    el.appendChild(b);
+  });
+}
+
+function levelStyle(id){
+  const l = LEVELS.find(x=>x.id===id) || LEVELS[0];
+  return l;
+}
+
+function renderPanel(){
+  const p = document.getElementById("panel");
+  p.innerHTML = "";
+  const yc = yearCourses(activeYear);
+
+  if(!state.courses.length){
+    p.innerHTML = `<div class="empty">
+      <h3>Nothing here yet</h3>
+      <p>Add the classes on your schedule — name, credits, difficulty, and a grade if you have one.</p>
+      <button class="solid" id="emptyAdd">Add your first class</button>
+      <button class="ghost" id="emptySample" style="margin-left:8px">Try a sample year</button>
+    </div>`;
+    p.querySelector("#emptyAdd").onclick = () => openCourse();
+    p.querySelector("#emptySample").onclick = loadSample;
+    return;
+  }
+
+  TERMS.forEach(t => {
+    const list = yc.filter(c => c.term===t);
+    const wrap = document.createElement("div");
+    wrap.className = "term";
+    const w = gpa(list,true), u = gpa(list,false);
+    const cr = list.filter(counts).reduce((s,c)=>s+c.credits,0);
+    wrap.innerHTML = `<div class="term-head">
+        <h4>Semester ${t==="S1"?"1":"2"}</h4>
+        <div class="sp"></div>
+        <span class="pill">Weighted <b>${w?fmt(w.gpa):"—"}</b></span>
+        <span class="pill">Unweighted <b>${u?fmt(u.gpa):"—"}</b></span>
+        <span class="pill">${cr.toFixed(1)} cr</span>
+      </div>`;
+
+    if(!list.length){
+      const e = document.createElement("div");
+      e.style.cssText = "padding:18px 20px;color:var(--ink-3);font-size:13.5px";
+      e.textContent = "No classes in this semester yet.";
+      wrap.appendChild(e);
+    }
+
+    list.forEach(c => {
+      const l = levelStyle(c.level);
+      const row = document.createElement("div");
+      row.className = "row";
+      const pw = points(c,true), pu = points(c,false);
+      row.innerHTML = `
+        <div class="cname">
+          <span class="swatch" style="background:${l.hex}"></span>
+          <span class="t"><b></b><small>${c.credits.toFixed(2).replace(/0$/,"")} credits</small></span>
+        </div>
+        <div class="lvlcell"><span class="lvl" style="color:${l.hex};background:${l.hex}14">${l.short}</span></div>
+        <div class="gradecell"></div>
+        <div class="gpt">${pw!==null&&counts(c) ? `${pw.toFixed(2)} w · ${pu.toFixed(2)} u` : "&nbsp;"}</div>
+        <div class="acts">
+          <button class="icon" title="Edit"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+          <button class="icon del" title="Delete"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
+        </div>`;
+      row.querySelector(".cname b").textContent = c.name;
+
+      const gc = row.querySelector(".gradecell");
+      if(isGraded(c)){
+        gc.innerHTML = `<div class="grade">${c.grade}</div>`;
+      } else {
+        const sel = document.createElement("select");
+        sel.className = "sim-select";
+        sel.title = "Projected grade";
+        sel.innerHTML = `<option value="">—</option>` + GRADES.map(([g])=>`<option value="${g}">${g}</option>`).join("");
+        sel.value = c.sim || "";
+        sel.onchange = () => {
+          c.sim = sel.value || null;
+          if(c.sim && !state.sim){ state.sim = true; document.getElementById("simToggle").checked = true; }
+          save(); render();
+        };
+        gc.appendChild(sel);
+      }
+
+      const [editBtn, delBtn] = row.querySelectorAll(".acts button");
+      editBtn.onclick = () => openCourse(c.id);
+      delBtn.onclick = () => {
+        state.courses = state.courses.filter(x => x.id !== c.id);
+        save(); render(); toast(`Deleted ${c.name}`);
+      };
+      wrap.appendChild(row);
+    });
+
+    const add = document.createElement("div");
+    add.className = "addrow";
+    add.innerHTML = `<button class="ghost">+ Add a class to ${activeYear}th, semester ${t==="S1"?"1":"2"}</button>`;
+    add.querySelector("button").onclick = () => openCourse(null, {year:activeYear, term:t});
+    wrap.appendChild(add);
+    p.appendChild(wrap);
+  });
+}
+
+function renderMe(){
+  const el = document.getElementById("me");
+  const pf = state.profile;
+  if(pf.picture) el.innerHTML = `<img src="${pf.picture}" alt="" />`;
+  else el.textContent = (pf.name || "?").trim().charAt(0).toUpperCase();
+  el.title = pf.name ? `${pf.name}${pf.email?" · "+pf.email:""} — click to sign out` : "Sign in";
+}
+
+/* ---------- course dialog ---------- */
+const dlg = document.getElementById("courseDialog");
+function buildLevelChips(selected){
+  const box = document.getElementById("fLevel");
+  box.innerHTML = "";
+  LEVELS.forEach(l => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.textContent = l.id;
+    b.dataset.level = l.id;
+    const on = l.id === selected;
+    b.setAttribute("aria-pressed", String(on));
+    if(on){ b.style.background = l.hex; b.style.color = "#fff"; }
+    b.onclick = () => buildLevelChips(l.id);
+    box.appendChild(b);
+  });
+}
+function selectedLevel(){
+  const b = document.querySelector('#fLevel .chip[aria-pressed="true"]');
+  return b ? b.dataset.level : "Regular";
+}
+function fillGradeSelect(){
+  const s = document.getElementById("fGrade");
+  s.innerHTML = `<option value="">Not graded yet</option>` +
+    GRADES.map(([g,v]) => `<option value="${g}">${g} — ${v.toFixed(1)}</option>`).join("");
+}
+function openCourse(id=null, preset={}){
+  editingId = id;
+  const c = id ? state.courses.find(x=>x.id===id) : null;
+  document.getElementById("dTitle").textContent = c ? "Edit class" : "Add a class";
+  document.getElementById("fSave").textContent = c ? "Save changes" : "Add class";
+  document.getElementById("fName").value = c ? c.name : "";
+  document.getElementById("fYear").value = String(c ? c.year : (preset.year || activeYear));
+  document.getElementById("fTerm").value = c ? c.term : (preset.term || "S1");
+  document.getElementById("fCredits").value = c ? c.credits : 1;
+  fillGradeSelect();
+  document.getElementById("fGrade").value = c && c.grade ? c.grade : "";
+  buildLevelChips(c ? c.level : "Regular");
+  dlg.showModal();
+  setTimeout(()=>document.getElementById("fName").focus(),30);
+}
+document.getElementById("fCancel").onclick = () => dlg.close();
+document.getElementById("courseForm").addEventListener("submit", e => {
+  const name = document.getElementById("fName").value.trim();
+  if(!name) { e.preventDefault(); return; }
+  const data = {
+    name,
+    year: Number(document.getElementById("fYear").value),
+    term: document.getElementById("fTerm").value,
+    credits: Math.max(0, Number(document.getElementById("fCredits").value) || 0),
+    level: selectedLevel(),
+    grade: document.getElementById("fGrade").value || null
+  };
+  if(editingId){
+    const c = state.courses.find(x=>x.id===editingId);
+    Object.assign(c, data);
+    if(c.grade) c.sim = null;
+    toast(`Updated ${c.name}`);
+  } else {
+    state.courses.push(Object.assign({id:crypto.randomUUID(), sim:null}, data));
+    activeYear = data.year;
+    toast(`Added ${name}`);
+  }
+  save(); render();
+});
+
+/* ---------- settings ---------- */
+const sdlg = document.getElementById("settingsDialog");
+document.getElementById("settingsBtn").onclick = () => {
+  document.getElementById("sTarget").value = state.settings.target;
+  document.getElementById("sHon").value = state.settings.bumps.Honors;
+  document.getElementById("sAp").value = state.settings.bumps.AP;
+  document.getElementById("sIb").value = state.settings.bumps.IB;
+  sdlg.showModal();
+};
+document.getElementById("settingsForm").addEventListener("submit", () => {
+  state.settings.target = Number(document.getElementById("sTarget").value) || 4;
+  state.settings.bumps.Honors = Number(document.getElementById("sHon").value) || 0;
+  state.settings.bumps.AP = Number(document.getElementById("sAp").value) || 0;
+  state.settings.bumps.IB = Number(document.getElementById("sIb").value) || 0;
+  save(); render(); toast("Settings saved");
+});
+document.getElementById("sReset").onclick = async () => {
+  if(!confirm("Erase every class and setting? This can't be undone.")) return;
+  state = structuredClone(DEFAULTS);
+  if(cloud){ try{ await cloud.setDoc(cloud.ref, payload()); }catch(e){} }
+  if(fb && fb.auth.currentUser){ try{ await fb.signOut(fb.auth); }catch(e){} }
+  detachCloud();
+  await saveLocal(); sdlg.close(); render();
+  document.getElementById("simToggle").checked = false;
+  document.getElementById("gate").style.display = "grid";
+};
+
+/* ---------- misc wiring ---------- */
+document.getElementById("addBtn").onclick = () => openCourse();
+document.getElementById("simToggle").onchange = e => { state.sim = e.target.checked; save(); render(); };
+document.getElementById("me").onclick = async () => {
+  if(!state.profile.name){ document.getElementById("gate").style.display = "grid"; return; }
+  if(!confirm("Sign out? Your classes stay saved on this device.")) return;
+  if(fb && fb.auth.currentUser){ try{ await fb.signOut(fb.auth); }catch(e){} }
+  detachCloud();
+  state.profile = structuredClone(DEFAULTS.profile);
+  saveLocal(); renderMe();
+  setSync("local", "This device only");
+  document.getElementById("gate").style.display = "grid";
+};
+let toastT;
+function toast(msg){
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.classList.add("on");
+  clearTimeout(toastT); toastT = setTimeout(()=>el.classList.remove("on"), 2200);
+}
+
+function loadSample(){
+  const mk = (name,level,term,grade,credits=1) => ({id:crypto.randomUUID(),name,level,year:9,term,credits,grade,sim:null});
+  state.courses.push(
+    mk("Honors Biology","Honors","S1","A-"), mk("Honors Biology","Honors","S2","A"),
+    mk("Geometry","Regular","S1","B+"), mk("Geometry","Regular","S2","A-"),
+    mk("World Literature","Regular","S1","A"), mk("World Literature","Regular","S2","A"),
+    mk("AP Human Geography","AP","S1","B+"), mk("AP Human Geography","AP","S2","A-"),
+    mk("Spanish II","Regular","S1","A-",0.5)
+  );
+  activeYear = 9; save(); render(); toast("Sample year loaded — edit or delete anything");
+}
+
+/* ---------- sign in ---------- */
+let fb = null;   // loaded Firebase modules
+
+function closeGate(){ document.getElementById("gate").style.display = "none"; }
+function openGate(){ document.getElementById("gate").style.display = "grid"; }
+
+function finishSignIn(profile){
+  state.profile = profile;
+  saveLocal();
+  closeGate();
+  renderMe();
+}
+document.getElementById("localBtn").onclick = () => {
+  const n = document.getElementById("localName").value.trim() || "Student";
+  finishSignIn({name:n, email:null, picture:null});
+  setSync("local", "This device only");
+};
+document.getElementById("localName").addEventListener("keydown", e => {
+  if(e.key === "Enter") document.getElementById("localBtn").click();
+});
+
+document.getElementById("googleBtn").onclick = async () => {
+  if(!firebaseReady()){
+    toast("Add your Firebase config to turn this on");
+    document.getElementById("localName").focus();
+    return;
+  }
+  const btn = document.getElementById("googleBtn");
+  btn.disabled = true;
+  try{
+    await fb.signInWithPopup(fb.auth, new fb.GoogleAuthProvider());
+  }catch(e){
+    toast(e.code === "auth/popup-closed-by-user" ? "Sign-in cancelled" : "Sign-in failed — check your Firebase setup");
+  }finally{
+    btn.disabled = false;
+  }
+};
+
+async function initFirebase(){
+  if(!firebaseReady()) return;
+  try{
+    const [appMod, authMod, dbMod] = await Promise.all([
+      import(`${SDK}/firebase-app.js`),
+      import(`${SDK}/firebase-auth.js`),
+      import(`${SDK}/firebase-firestore.js`)
+    ]);
+    const app = appMod.initializeApp(FIREBASE_CONFIG);
+    fb = {
+      auth: authMod.getAuth(app),
+      db: dbMod.getFirestore(app),
+      GoogleAuthProvider: authMod.GoogleAuthProvider,
+      signInWithPopup: authMod.signInWithPopup,
+      signOut: authMod.signOut,
+      doc: dbMod.doc, getDoc: dbMod.getDoc, setDoc: dbMod.setDoc, onSnapshot: dbMod.onSnapshot
+    };
+    document.getElementById("gateNote").textContent =
+      "Signing in with Google saves your coursework to your account, so it follows you to any device.";
+    authMod.onAuthStateChanged(fb.auth, user => user ? attachCloud(user) : detachCloud());
+  }catch(e){
+    console.warn("Firebase failed to load", e);
+    document.getElementById("gateNote").textContent =
+      "Couldn't reach Firebase. You can still keep your coursework on this device.";
+  }
+}
+
+async function attachCloud(user){
+  const ref = fb.doc(fb.db, "students", user.uid);
+  cloud = {ref, setDoc: fb.setDoc};
+  state.profile = {name: user.displayName ? user.displayName.split(" ")[0] : "Student", email: user.email, picture: user.photoURL};
+  setSync("saving", "Loading your classes…");
+
+  try{
+    const snap = await fb.getDoc(ref);
+    if(snap.exists() && (snap.data().courses || []).length){
+      applyingRemote = true;
+      const remote = hydrate(snap.data());
+      remote.profile = state.profile;
+      state = remote;
+      applyingRemote = false;
+      saveLocal();
+    } else {
+      // first sign-in on this account: lift whatever is already on this device
+      await fb.setDoc(ref, payload(), {merge:true});
+    }
+    setSync("ok", "Synced");
+  }catch(e){
+    setSync("offline", "Couldn't reach the cloud — saved on this device");
+  }
+
+  // keep other devices in step
+  fb.onSnapshot(ref, snap => {
+    if(!snap.exists() || snap.metadata.hasPendingWrites) return;
+    const d = snap.data();
+    if(JSON.stringify(d.courses) === JSON.stringify(state.courses) &&
+       JSON.stringify(d.settings) === JSON.stringify(state.settings)) return;
+    applyingRemote = true;
+    const remote = hydrate(d);
+    remote.profile = state.profile;
+    state = remote;
+    applyingRemote = false;
+    saveLocal();
+    document.getElementById("simToggle").checked = !!state.sim;
+    render();
+  }, () => setSync("offline", "Sync paused"));
+
+  document.getElementById("simToggle").checked = !!state.sim;
+  closeGate();
+  render();
+}
+
+function detachCloud(){
+  cloud = null;
+  clearTimeout(cloudTimer);
+}
+
+/* ---------- boot ---------- */
+(async function(){
+  await loadLocal();
+  document.getElementById("simToggle").checked = !!state.sim;
+  if(state.profile.name){ closeGate(); setSync("local", "This device only"); }
+  render();
+  initFirebase();
+})();
+</script>
+</body>
+</html>
