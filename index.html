@@ -9,25 +9,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#14151C;
-  --ink-2:#565C75;
-  --ink-3:#8A90A8;
-  --paper:#EFF2F9;
+  --forest:#00583D;
+  --green:#3BAE43;
+  --green-soft:#E8F5E9;
+  --forest-soft:#E3EDE9;
+  --orange:#D97757;
+  --orange-soft:#FBEEE9;
+  --ink:#0E1F19;
+  --ink-2:#53625B;
+  --ink-3:#8A9691;
+  --paper:#F1F4F2;
   --card:#FFFFFF;
-  --line:#E1E6F3;
-  --line-2:#CDD5EA;
-  --brand:#3A32D8;
-  --brand-soft:#EDECFE;
-  --reg:#7B85A6;
-  --hon:#0FA9A4;
-  --ap:#7B4FFF;
-  --ib:#E08A00;
-  --good:#12996E;
-  --warn:#DB4A32;
+  --line:#DFE6E2;
+  --line-2:#C6D2CC;
+  --warn:#C0492E;
   --r-lg:20px;
   --r-md:14px;
   --r-sm:10px;
-  --shadow:0 1px 2px rgba(20,21,28,.05), 0 8px 24px -16px rgba(20,21,28,.24);
+  --shadow:0 1px 2px rgba(14,31,25,.05), 0 8px 24px -16px rgba(14,31,25,.28);
   --display:"Bricolage Grotesque","Public Sans",system-ui,sans-serif;
   --body:"Public Sans",system-ui,-apple-system,sans-serif;
   --mono:"DM Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -41,7 +40,7 @@ body{
   font-size:15px;
   line-height:1.5;
   -webkit-font-smoothing:antialiased;
-  background-image:repeating-linear-gradient(to bottom,transparent 0 31px,rgba(58,50,216,.045) 31px 32px);
+  background-image:repeating-linear-gradient(to bottom,transparent 0 31px,rgba(0,88,61,.055) 31px 32px);
 }
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -49,38 +48,44 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.02em}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
 .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+:focus-visible{outline:2px solid var(--forest);outline-offset:2px}
 
 /* ---------- header ---------- */
-header{position:sticky;top:0;z-index:40;background:rgba(239,242,249,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:40;background:rgba(241,244,242,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .bar{display:flex;align-items:center;gap:14px;height:62px}
-.mark{display:flex;align-items:baseline;gap:9px;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.03em}
-.mark i{width:10px;height:10px;border-radius:3px;background:var(--brand);display:block;transform:translateY(-1px)}
+.mark{display:flex;align-items:baseline;gap:9px;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.03em;color:var(--forest)}
+.mark i{width:10px;height:10px;border-radius:3px;background:var(--green);display:block;transform:translateY(-1px)}
 .mark span{color:var(--ink-3);font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
 .bar .sp{flex:1}
 .ghost{background:transparent;border:1px solid var(--line-2);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--ink-2)}
-.ghost:hover{border-color:var(--ink-3);color:var(--ink)}
-.solid{background:var(--brand);color:#fff;border:0;border-radius:999px;padding:9px 17px;font-size:13.5px;font-weight:600}
-.solid:hover{background:#2f28bd}
+.ghost:hover{border-color:var(--forest);color:var(--forest)}
+.solid{background:var(--forest);color:#fff;border:0;border-radius:999px;padding:9px 17px;font-size:13.5px;font-weight:600}
+.solid:hover{background:#00432F}
 .sync{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--ink-3);white-space:nowrap}
 .sync::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ink-3)}
-.sync[data-kind="ok"]{color:var(--good)}
-.sync[data-kind="ok"]::before{background:var(--good)}
-.sync[data-kind="saving"]::before{background:var(--brand)}
+.sync[data-kind="ok"]{color:var(--green)}
+.sync[data-kind="ok"]::before{background:var(--green)}
+.sync[data-kind="saving"]::before{background:var(--forest)}
 .sync[data-kind="offline"]{color:var(--warn)}
 .sync[data-kind="offline"]::before{background:var(--warn)}
 @media (max-width:640px){.sync{display:none}}
-.avatar{width:32px;height:32px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;font-weight:700;font-size:13px;border:1px solid var(--line-2);overflow:hidden}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--forest-soft);color:var(--forest);display:grid;place-items:center;font-weight:700;font-size:13px;border:1px solid var(--line-2);overflow:hidden}
 .avatar img{width:100%;height:100%;object-fit:cover}
 
 /* ---------- hero ---------- */
-.hero{display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:28px;padding:34px 0 10px;align-items:stretch}
+.hero{display:grid;grid-template-columns:minmax(280px,352px) 1fr;gap:28px;padding:34px 0 10px;align-items:stretch}
 .readout{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column}
-.readout .big{font-family:var(--mono);font-size:clamp(56px,11vw,76px);line-height:.94;font-weight:500;letter-spacing:-.05em;margin:10px 0 2px}
-.readout .big.proj{color:var(--brand)}
-.readout .sub{color:var(--ink-2);font-size:13.5px}
+.readout .big{font-family:var(--mono);font-size:clamp(50px,10vw,66px);line-height:.94;font-weight:500;letter-spacing:-.05em;margin:10px 0 0;color:var(--forest)}
+.readout .big.proj{color:var(--orange)}
+.readout .scales{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:16px}
+.readout .scales div{background:var(--card);padding:9px 10px}
+.readout .scales .k{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.readout .scales .v{font-family:var(--mono);font-size:19px;letter-spacing:-.03em;color:var(--forest)}
+.readout.projected .scales .v{color:var(--orange)}
+.readout .sub{color:var(--ink-2);font-size:13px;margin-top:12px}
 .readout .sub b{font-family:var(--mono);color:var(--ink);font-weight:500}
-.delta{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:999px;padding:3px 9px;background:var(--brand-soft);color:var(--brand);font-family:var(--mono)}
-.split{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line-2);display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.delta{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:999px;padding:3px 9px;background:var(--orange-soft);color:var(--orange);font-family:var(--mono);margin-top:10px}
+.split{margin-top:auto;padding-top:16px;border-top:1px dashed var(--line-2);display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .split div .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
 .split div .v{font-family:var(--mono);font-size:22px;letter-spacing:-.03em}
 
@@ -99,61 +104,65 @@ svg.chart{width:100%;height:auto;display:block;flex:1}
 .stat .v{font-family:var(--mono);font-size:28px;letter-spacing:-.03em;margin-top:4px}
 .stat .n{font-size:12.5px;color:var(--ink-2);margin-top:2px}
 .track{height:7px;border-radius:99px;background:var(--paper);border:1px solid var(--line);margin-top:12px;position:relative;overflow:hidden}
-.track em{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--brand),var(--hon));border-radius:99px}
+.track em{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--forest),var(--green));border-radius:99px}
 
 /* ---------- coursework ---------- */
 .section-head{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;padding:34px 0 14px}
 .section-head h2{font-size:26px;font-weight:800}
-.section-head p{margin:2px 0 0;color:var(--ink-2);font-size:13.5px;max-width:46ch}
+.section-head p{margin:2px 0 0;color:var(--ink-2);font-size:13.5px;max-width:48ch}
 .section-head .sp{flex:1}
 .switch{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;color:var(--ink-2);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 8px}
 .switch input{appearance:none;width:34px;height:20px;border-radius:99px;background:var(--line-2);position:relative;transition:background .18s;margin:0}
 .switch input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .18s}
-.switch input:checked{background:var(--brand)}
+.switch input:checked{background:var(--orange)}
 .switch input:checked::after{transform:translateX(14px)}
 
 .tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
-.tab{white-space:nowrap;border:1px solid var(--line);border-bottom:0;background:#F7F9FE;color:var(--ink-2);padding:10px 16px 12px;border-radius:12px 12px 0 0;font-size:13.5px;font-weight:600;position:relative;top:1px}
+.tab{white-space:nowrap;border:1px solid var(--line);border-bottom:0;background:#F7FAF8;color:var(--ink-2);padding:10px 16px 12px;border-radius:12px 12px 0 0;font-size:13.5px;font-weight:600;position:relative;top:1px}
 .tab .g{font-family:var(--mono);font-size:12px;color:var(--ink-3);margin-left:7px}
-.tab[aria-selected="true"]{background:var(--card);color:var(--ink);border-color:var(--line);box-shadow:0 -3px 0 var(--brand) inset}
-.tab[aria-selected="true"] .g{color:var(--brand)}
+.tab[aria-selected="true"]{background:var(--card);color:var(--ink);border-color:var(--line);box-shadow:0 -3px 0 var(--green) inset}
+.tab[aria-selected="true"] .g{color:var(--forest)}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:0 var(--r-lg) var(--r-lg) var(--r-lg);box-shadow:var(--shadow);overflow:hidden}
 
 .term{border-bottom:1px solid var(--line)}
 .term:last-child{border-bottom:0}
-.term-head{display:flex;align-items:center;gap:12px;padding:14px 20px;background:#FAFBFF;border-bottom:1px solid var(--line)}
+.term-head{display:flex;align-items:center;gap:8px;padding:14px 20px;background:#F7FAF8;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .term-head h4{margin:0;font-family:var(--display);font-size:14px;font-weight:700}
 .term-head .sp{flex:1}
 .pill{font-family:var(--mono);font-size:12px;color:var(--ink-2);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
-.pill b{color:var(--ink);font-weight:500}
+.pill b{color:var(--forest);font-weight:500}
+.pill.muted b{color:var(--ink-2)}
 
-.row{display:grid;grid-template-columns:1fr 92px 118px 96px 74px;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:1fr 78px 76px 132px 74px;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line)}
 .row:last-child{border-bottom:0}
-.row:hover{background:#FBFCFF}
+.row:hover{background:#FAFCFB}
 .cname{display:flex;align-items:center;gap:10px;min-width:0}
 .cname .swatch{width:4px;height:26px;border-radius:99px;flex:none}
 .cname .t{min-width:0}
 .cname .t b{display:block;font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cname .t small{color:var(--ink-3);font-size:11.5px}
-.lvl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 7px;background:#F3F5FB;color:var(--ink-2)}
+.lvl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:3px 7px;background:#F2F5F3;color:var(--ink-2)}
 .grade{font-family:var(--mono);font-size:19px;text-align:center}
-.grade.none{color:var(--ink-3)}
-.gpt{font-family:var(--mono);font-size:13px;color:var(--ink-2);text-align:right}
-.sim-select{width:100%;font-family:var(--mono);font-size:14px;text-align:center;border:1px dashed var(--brand);color:var(--brand);background:var(--brand-soft);border-radius:8px;padding:5px 4px}
+.math{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);text-align:right;white-space:nowrap}
+.math .bump{color:var(--green);font-weight:500}
+.math .band{color:var(--ink-3)}
+.sim-input{width:100%;font-family:var(--mono);font-size:16px;text-align:center;border:1px dashed var(--orange);color:var(--orange);background:var(--orange-soft);border-radius:8px;padding:5px 4px;-moz-appearance:textfield}
+.sim-input::-webkit-outer-spin-button,.sim-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.sim-input::placeholder{color:#E0AC98}
 .acts{display:flex;gap:6px;justify-content:flex-end}
 .icon{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;color:var(--ink-2)}
-.icon:hover{border-color:var(--ink-3);color:var(--ink)}
+.icon:hover{border-color:var(--forest);color:var(--forest)}
 .icon.del:hover{border-color:var(--warn);color:var(--warn)}
 .icon svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-.addrow{padding:16px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#FAFBFF}
+.addrow{padding:16px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#F7FAF8}
 .empty{padding:46px 24px;text-align:center}
 .empty h3{font-size:19px;margin-bottom:6px}
 .empty p{color:var(--ink-2);margin:0 auto 18px;max-width:40ch;font-size:14px}
 
 /* ---------- modal ---------- */
-dialog{border:0;padding:0;border-radius:var(--r-lg);box-shadow:0 30px 70px -20px rgba(20,21,28,.45);width:min(520px,calc(100vw - 32px));background:var(--card)}
-dialog::backdrop{background:rgba(20,21,28,.42);backdrop-filter:blur(3px)}
+dialog{border:0;padding:0;border-radius:var(--r-lg);box-shadow:0 30px 70px -20px rgba(14,31,25,.45);width:min(520px,calc(100vw - 32px));background:var(--card)}
+dialog::backdrop{background:rgba(14,31,25,.44);backdrop-filter:blur(3px)}
 .dh{padding:20px 22px 4px}
 .dh h3{font-size:20px;font-weight:800}
 .dh p{margin:4px 0 0;color:var(--ink-2);font-size:13.5px}
@@ -161,11 +170,11 @@ dialog::backdrop{background:rgba(20,21,28,.42);backdrop-filter:blur(3px)}
 .df{display:grid;gap:6px}
 .df label{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--ink-3)}
 .df input,.df select{border:1px solid var(--line-2);border-radius:var(--r-sm);padding:10px 12px;background:#fff;width:100%}
-.df input:focus,.df select:focus{outline:2px solid var(--brand);outline-offset:1px;border-color:transparent}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.df input:focus,.df select:focus{outline:2px solid var(--forest);outline-offset:1px;border-color:transparent}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
 .chip{border:1px solid var(--line-2);background:#fff;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.chip small{font-family:var(--mono);opacity:.75;margin-left:5px}
 .chip[aria-pressed="true"]{color:#fff;border-color:transparent}
 .df-note{font-size:12.5px;color:var(--ink-3)}
 .dfoot{padding:18px 22px 20px;display:flex;gap:10px;align-items:center;border-top:1px solid var(--line);margin-top:16px}
@@ -173,30 +182,31 @@ dialog::backdrop{background:rgba(20,21,28,.42);backdrop-filter:blur(3px)}
 
 /* ---------- sign in ---------- */
 .gate{position:fixed;inset:0;z-index:80;background:var(--paper);display:grid;place-items:center;padding:24px;
-  background-image:repeating-linear-gradient(to bottom,transparent 0 31px,rgba(58,50,216,.05) 31px 32px)}
+  background-image:repeating-linear-gradient(to bottom,transparent 0 31px,rgba(0,88,61,.06) 31px 32px)}
 .gate .box{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);max-width:420px;width:100%;padding:34px 30px;text-align:center}
-.gate h1{font-size:30px;font-weight:800;line-height:1.08;margin-bottom:10px}
-.gate h1 em{font-style:normal;color:var(--brand)}
+.gate h1{font-size:30px;font-weight:800;line-height:1.08;margin-bottom:10px;color:var(--forest)}
+.gate h1 em{font-style:normal;color:var(--green)}
 .gate p{color:var(--ink-2);font-size:14px;margin:0 0 22px}
-.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid var(--line-2);border-radius:12px;padding:12px;font-weight:600;font-size:14.5px;box-shadow:0 1px 2px rgba(20,21,28,.06)}
-.gbtn:hover{background:#FAFBFF}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border:1px solid var(--line-2);border-radius:12px;padding:12px;font-weight:600;font-size:14.5px;box-shadow:0 1px 2px rgba(14,31,25,.06)}
+.gbtn:hover{background:#F7FAF8}
+.gbtn:disabled{opacity:.6}
 .gate .or{display:flex;align-items:center;gap:12px;color:var(--ink-3);font-size:12px;margin:16px 0}
 .gate .or::before,.gate .or::after{content:"";height:1px;background:var(--line);flex:1}
 .gate input{width:100%;border:1px solid var(--line-2);border-radius:12px;padding:12px;text-align:center;margin-bottom:10px}
 .gate small{display:block;color:var(--ink-3);font-size:11.5px;margin-top:16px;line-height:1.5}
 
 footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center}
-.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:.22s;z-index:90}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--forest);color:#fff;padding:11px 18px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:.22s;z-index:90;max-width:calc(100vw - 40px);text-align:center}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 
 @media (max-width:880px){
   .hero{grid-template-columns:1fr}
   .stats{grid-template-columns:1fr}
-  .row{grid-template-columns:1fr 84px;grid-template-areas:"name grade" "meta acts";row-gap:8px}
+  .row{grid-template-columns:1fr 76px;grid-template-areas:"name grade" "meta acts";row-gap:8px}
   .row .cname{grid-area:name}
   .row .gradecell{grid-area:grade}
   .row .lvlcell{grid-area:meta;display:flex;gap:8px;align-items:center}
-  .row .gpt{grid-area:meta;text-align:left;justify-self:end}
+  .row .math{grid-area:meta;text-align:left;justify-self:end}
   .row .acts{grid-area:acts}
   .grid3{grid-template-columns:1fr 1fr}
 }
@@ -208,8 +218,8 @@ footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center
 <div class="gate" id="gate">
   <div class="box">
     <div class="mark" style="justify-content:center;margin-bottom:16px"><i></i>Four Years<span>gpa</span></div>
-    <h1>Every class you take,<br><em>one number</em>.</h1>
-    <p>Track grades 9 through 12. Weighted and unweighted, by semester, by year, and all four years together.</p>
+    <h1>Every class you take,<br><em>three ways</em>.</h1>
+    <p>Grades 9 through 12, weighted and unweighted, on a 100-point average, a 4.0 GPA, and a 10-point scale at once.</p>
     <button class="gbtn" id="googleBtn">
       <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
       Continue with Google
@@ -217,7 +227,7 @@ footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center
     <div class="or">or</div>
     <input id="localName" placeholder="Your first name" autocomplete="given-name" />
     <button class="solid" style="width:100%;border-radius:12px;padding:12px" id="localBtn">Keep it on this device</button>
-    <small id="gateNote">Google sign-in needs your Firebase config. Until it's added, this saves your coursework to this browser.</small>
+    <small id="gateNote">Signing in with Google saves your coursework to your account, so it follows you to any device.</small>
   </div>
 </div>
 
@@ -234,11 +244,16 @@ footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center
 
 <main class="wrap">
   <section class="hero">
-    <div class="readout">
+    <div class="readout" id="readout">
       <div class="eyebrow">Cumulative weighted</div>
       <div class="big num" id="cumW">—</div>
+      <div class="scales">
+        <div><div class="k">/100</div><div class="v num" id="sc100">—</div></div>
+        <div><div class="k">/4.0</div><div class="v num" id="sc4">—</div></div>
+        <div><div class="k">/10</div><div class="v num" id="sc10">—</div></div>
+      </div>
       <div id="deltaWrap"></div>
-      <div class="sub" style="margin-top:8px">Unweighted <b id="cumU">—</b> · <span id="courseCount">no classes yet</span></div>
+      <div class="sub">Unweighted <b id="cumU">—</b> <span id="cumUAll"></span><br><span id="courseCount">no classes yet</span></div>
       <div class="split">
         <div><div class="k">Credits earned</div><div class="v num" id="credEarned">0</div></div>
         <div><div class="k">In progress</div><div class="v num" id="credOpen">0</div></div>
@@ -249,19 +264,20 @@ footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center
       <div class="ribbon-head">
         <h3>Eight semesters</h3>
         <div class="legend">
-          <b><i style="background:var(--brand)"></i>Weighted</b>
+          <b><i style="background:var(--forest)"></i>Weighted</b>
           <b><i style="background:var(--ink-3)"></i>Unweighted</b>
-          <b><i style="background:var(--good);opacity:.6"></i>Target</b>
+          <b><i style="background:var(--green)"></i>Target</b>
+          <b><i style="background:var(--orange)"></i>Projected</b>
         </div>
       </div>
-      <svg class="chart" id="chart" viewBox="0 0 720 250" preserveAspectRatio="xMidYMid meet" role="img" aria-label="GPA by semester"></svg>
+      <svg class="chart" id="chart" viewBox="0 0 720 250" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Weighted and unweighted average by semester"></svg>
     </div>
   </section>
 
   <section class="stats">
     <div class="stat">
-      <div class="k">Target GPA</div>
-      <div class="v num" id="targetVal">4.00</div>
+      <div class="k">Target average</div>
+      <div class="v num" id="targetVal">95.0</div>
       <div class="n" id="targetNote">Set a goal to see how close you are.</div>
       <div class="track"><em id="targetBar" style="width:0"></em></div>
     </div>
@@ -271,16 +287,16 @@ footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center
       <div class="n" id="bestSemNote">Add graded classes to compare terms.</div>
     </div>
     <div class="stat">
-      <div class="k">Course load</div>
+      <div class="k">Points from weighting</div>
       <div class="v num" id="loadVal">—</div>
-      <div class="n" id="loadNote">Honors, AP and IB classes lift your weighted GPA.</div>
+      <div class="n" id="loadNote">Honors and AP classes lift your weighted average.</div>
     </div>
   </section>
 
   <div class="section-head">
     <div>
       <h2>Coursework</h2>
-      <p>Leave a grade blank to plan ahead — then give it a projected grade and watch the whole page respond.</p>
+      <p>Enter grades as percentages. Leave one blank to plan ahead, then type a projected number and watch the whole page respond.</p>
     </div>
     <div class="sp"></div>
     <label class="switch"><input type="checkbox" id="simToggle" /> Count projected grades</label>
@@ -289,7 +305,7 @@ footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center
   <div class="tabs" id="tabs" role="tablist"></div>
   <div class="panel" id="panel"></div>
 
-  <footer>Built for grades 9–12. Your coursework stays in this browser unless you connect an account.</footer>
+  <footer>Weighted average adds your school's course points to each grade. The 4.0 and 10-point figures are conversions, not official transcript numbers.</footer>
 </main>
 
 <dialog id="courseDialog">
@@ -319,9 +335,9 @@ footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center
         </div>
       </div>
       <div class="df">
-        <label for="fGrade">Grade</label>
-        <select id="fGrade"></select>
-        <div class="df-note">Choose “Not graded yet” for a class you’re planning or still taking.</div>
+        <label for="fGrade">Grade (percent)</label>
+        <input id="fGrade" type="number" step="0.1" min="0" max="110" placeholder="Not graded yet" />
+        <div class="df-note" id="fGradeNote">Leave blank for a class you're planning or still taking.</div>
       </div>
     </div>
     <div class="dfoot">
@@ -334,19 +350,26 @@ footer{padding:40px 0 56px;color:var(--ink-3);font-size:12.5px;text-align:center
 
 <dialog id="settingsDialog">
   <form method="dialog" id="settingsForm">
-    <div class="dh"><h3>Scale &amp; target</h3><p>Schools weight courses differently. Match yours here.</p></div>
+    <div class="dh"><h3>Scale &amp; target</h3><p>Your school adds points to the grade itself, before any averaging.</p></div>
     <div class="db">
       <div class="df">
-        <label for="sTarget">Target cumulative GPA (weighted)</label>
-        <input id="sTarget" type="number" step="0.01" min="0" max="6" />
+        <label for="sTarget">Target cumulative weighted average</label>
+        <input id="sTarget" type="number" step="0.1" min="0" max="110" />
       </div>
-      <div class="df"><label>Extra points added to a passing grade</label></div>
+      <div class="df"><label>Points added to each grade</label></div>
       <div class="grid3">
-        <div class="df"><label for="sHon">Honors</label><input id="sHon" type="number" step="0.05" min="0" max="2" /></div>
-        <div class="df"><label for="sAp">AP</label><input id="sAp" type="number" step="0.05" min="0" max="2" /></div>
-        <div class="df"><label for="sIb">IB</label><input id="sIb" type="number" step="0.05" min="0" max="2" /></div>
+        <div class="df"><label for="sReg">Regular</label><input id="sReg" type="number" step="0.5" min="0" max="20" /></div>
+        <div class="df"><label for="sHon">Honors</label><input id="sHon" type="number" step="0.5" min="0" max="20" /></div>
+        <div class="df"><label for="sAp">AP</label><input id="sAp" type="number" step="0.5" min="0" max="20" /></div>
       </div>
-      <div class="df-note">Regular classes are never weighted. A failing grade stays at 0.00 on both scales.</div>
+      <div class="df">
+        <label for="sScale">How to reach the 4.0 number</label>
+        <select id="sScale">
+          <option value="ten">Linear — 100 is a 4.0, 90 a 3.0, and weighting can push you above 4.0</option>
+          <option value="bands">Letter bands — 93+ is a 4.0, 90 an A-, and nothing goes above 4.0</option>
+        </select>
+        <div class="df-note">The /100 and /10 figures are always the average itself. Only the 4.0 column needs a rule. A grade below 60 is a 0.00 either way.</div>
+      </div>
     </div>
     <div class="dfoot">
       <button class="ghost" type="button" id="sReset">Erase all data</button>
@@ -389,29 +412,41 @@ function firebaseReady(){
   const c = fbConfig();
   return Boolean(c.apiKey && c.projectId);
 }
-const SDK = "https://www.gstatic.com/firebasejs/11.0.2";
+function sdkBase(){ return "https://www.gstatic.com/firebasejs/11.0.2"; }
 
+/* ============================================================
+   Grade model
+   Grades are percentages. The school adds course points to the
+   grade before averaging: Regular +2, Honors +5, AP +7.
+   Unweighted is the raw percentage, untouched.
+
+   Every average is reported on three scales:
+     /100  the average itself
+     /4.0  converted, either linearly or by letter band
+     /10   the average divided by ten
+   ============================================================ */
 const LEVELS = [
-  {id:"Regular", short:"REG", color:"var(--reg)",  hex:"#7B85A6"},
-  {id:"Honors",  short:"HON", color:"var(--hon)",  hex:"#0FA9A4"},
-  {id:"AP",      short:"AP",  color:"var(--ap)",   hex:"#7B4FFF"},
-  {id:"IB",      short:"IB",  color:"var(--ib)",   hex:"#E08A00"}
+  {id:"Regular", short:"REG", hex:"#8A9691"},
+  {id:"Honors",  short:"HON", hex:"#3BAE43"},
+  {id:"AP",      short:"AP",  hex:"#00583D"}
 ];
-const GRADES = [
-  ["A+",4.0],["A",4.0],["A-",3.7],
-  ["B+",3.3],["B",3.0],["B-",2.7],
-  ["C+",2.3],["C",2.0],["C-",1.7],
-  ["D+",1.3],["D",1.0],["D-",0.7],
-  ["F",0.0]
-];
-const GMAP = Object.fromEntries(GRADES);
 const YEARS = [9,10,11,12];
 const TERMS = ["S1","S2"];
-const SEMS = YEARS.flatMap(y => TERMS.map(t => ({y,t,key:y+t,label:`${y}·${t==="S1"?"1":"2"}`})));
+const SEMS = YEARS.flatMap(y => TERMS.map(t => ({y,t,key:y+t})));
+
+const BANDS = [
+  [97,"A+",4.0],[93,"A",4.0],[90,"A-",3.7],
+  [87,"B+",3.3],[83,"B",3.0],[80,"B-",2.7],
+  [77,"C+",2.3],[73,"C",2.0],[70,"C-",1.7],
+  [67,"D+",1.3],[63,"D",1.0],[60,"D-",0.7],
+  [0,"F",0.0]
+];
+const bandFor = p => BANDS.find(b => p >= b[0]) || BANDS[BANDS.length-1];
 
 const DEFAULTS = {
+  v: 2,
   courses: [],
-  settings: {target:4.0, bumps:{Regular:0,Honors:0.5,AP:1,IB:1}},
+  settings: {target:95, bumps:{Regular:2,Honors:5,AP:7}, scale:"ten"},
   profile: {name:null,email:null,picture:null},
   sim: false
 };
@@ -420,31 +455,43 @@ let activeYear = 9;
 let editingId = null;
 let memoryOnly = false;
 
-/* ---------- storage ----------
-   Three backends, picked at runtime:
-   1. Firestore, once you're signed in (syncs across devices)
-   2. window.storage, inside Claude's artifact preview
-   3. localStorage, everywhere else
-   Local always writes too, so the app opens instantly and works offline. */
+/* ---------- storage ---------- */
 const KEY = "fouryears:v1";
-let cloud = null;          // {ref, setDoc} once signed in
+let cloud = null;
 let cloudTimer = null;
 let applyingRemote = false;
 
+// v1 stored letter grades, a 4.0-point target, GPA-point bumps and an IB level.
+const LETTER_PCT = {"A+":98,"A":95,"A-":91,"B+":88,"B":85,"B-":81,"C+":78,"C":75,"C-":71,"D+":68,"D":65,"D-":61,"F":50};
+function migrate(d){
+  if(d.v >= 2) return d;
+  (d.courses||[]).forEach(c => {
+    if(typeof c.grade === "string" && c.grade in LETTER_PCT) c.grade = LETTER_PCT[c.grade];
+    if(typeof c.sim === "string" && c.sim in LETTER_PCT) c.sim = LETTER_PCT[c.sim];
+    if(c.level === "IB") c.level = "AP";
+  });
+  d.settings = d.settings || {};
+  d.settings.bumps = structuredClone(DEFAULTS.settings.bumps);
+  if(!(d.settings.target > 20)) d.settings.target = DEFAULTS.settings.target;
+  d.settings.scale = DEFAULTS.settings.scale;
+  d.v = 2;
+  return d;
+}
 function hydrate(parsed){
-  const next = Object.assign(structuredClone(DEFAULTS), parsed);
-  next.settings = Object.assign(structuredClone(DEFAULTS.settings), parsed.settings||{});
-  next.settings.bumps = Object.assign(structuredClone(DEFAULTS.settings.bumps), (parsed.settings||{}).bumps||{});
-  next.profile = Object.assign(structuredClone(DEFAULTS.profile), parsed.profile||{});
+  const src = migrate(structuredClone(parsed || {}));
+  const next = Object.assign(structuredClone(DEFAULTS), src);
+  next.settings = Object.assign(structuredClone(DEFAULTS.settings), src.settings||{});
+  next.settings.bumps = Object.assign(structuredClone(DEFAULTS.settings.bumps), (src.settings||{}).bumps||{});
+  next.profile = Object.assign(structuredClone(DEFAULTS.profile), src.profile||{});
   return next;
 }
-const payload = () => ({courses: state.courses, settings: state.settings, sim: state.sim, updatedAt: Date.now()});
+const payload = () => ({v:2, courses: state.courses, settings: state.settings, sim: state.sim, updatedAt: Date.now()});
 
 async function saveLocal(){
   const json = JSON.stringify(state);
   try{
     if(window.storage && window.storage.set){ await window.storage.set(KEY, json); return; }
-  }catch(e){ /* fall through */ }
+  }catch(e){}
   try{ localStorage.setItem(KEY, json); }
   catch(e){ memoryOnly = true; setSync("offline", "Saved for this session only"); }
 }
@@ -455,14 +502,11 @@ async function loadLocal(){
       const r = await window.storage.get(KEY);
       raw = r && r.value;
     }
-  }catch(e){ /* key missing or unsupported */ }
-  if(raw === null){
-    try{ raw = localStorage.getItem(KEY); }catch(e){}
-  }
+  }catch(e){}
+  if(raw === null){ try{ raw = localStorage.getItem(KEY); }catch(e){} }
   if(!raw) return;
   try{ state = hydrate(JSON.parse(raw)); }catch(e){}
 }
-
 function save(){
   saveLocal();
   if(cloud && !applyingRemote){
@@ -472,13 +516,10 @@ function save(){
       try{
         await cloud.setDoc(cloud.ref, payload(), {merge:true});
         setSync("ok", "Synced");
-      }catch(e){
-        setSync("offline", "Couldn't reach the cloud — saved on this device");
-      }
+      }catch(e){ setSync("offline", "Couldn't reach the cloud — saved on this device"); }
     }, 600);
   }
 }
-
 function setSync(kind, label){
   const el = document.getElementById("sync");
   if(!el) return;
@@ -488,64 +529,74 @@ function setSync(kind, label){
 }
 
 /* ---------- math ---------- */
-const isGraded = c => c.grade && c.grade in GMAP;
-const isSim    = c => !isGraded(c) && c.sim && c.sim in GMAP;
+const num = v => (v === null || v === undefined || v === "") ? null : (isNaN(Number(v)) ? null : Number(v));
+const isGraded = c => num(c.grade) !== null;
+const isSim    = c => !isGraded(c) && num(c.sim) !== null;
 const counts   = c => isGraded(c) || (state.sim && isSim(c));
-const gradeOf  = c => isGraded(c) ? c.grade : c.sim;
+const rawPct   = c => isGraded(c) ? num(c.grade) : num(c.sim);
+const bumpFor  = c => state.settings.bumps[c.level] || 0;
+const wtdPct   = c => { const p = rawPct(c); return p === null ? null : p + bumpFor(c); };
 
-function points(c, weighted){
-  const base = GMAP[gradeOf(c)];
-  if(base === undefined) return null;
-  if(!weighted || base === 0) return base;
-  return base + (state.settings.bumps[c.level] || 0);
+// The three scales.
+const toHundred = pct => pct;
+function toGpa(pct){
+  if(pct === null) return null;
+  if(pct < 60) return 0;
+  if(state.settings.scale === "bands") return Math.min(4.0, bandFor(Math.min(pct,100))[2]);
+  return Math.max(0, (pct - 60) / 10);
 }
-function gpa(list, weighted){
-  let qp = 0, cr = 0;
+const toTen = pct => pct === null ? null : pct / 10;
+
+function average(list, weighted){
+  let sum = 0, cr = 0;
   list.filter(counts).forEach(c => {
-    const p = points(c, weighted);
+    const p = weighted ? wtdPct(c) : rawPct(c);
     if(p === null) return;
-    qp += p * c.credits; cr += c.credits;
+    sum += p * c.credits; cr += c.credits;
   });
-  return cr ? {gpa: qp/cr, credits: cr, qp} : null;
+  return cr ? {pct: sum/cr, credits: cr, sum} : null;
 }
-const fmt = n => n === null || n === undefined ? "—" : n.toFixed(2);
+const f1 = n => n === null || n === undefined ? "—" : n.toFixed(1);
+const f2 = n => n === null || n === undefined ? "—" : n.toFixed(2);
 const semCourses = (y,t) => state.courses.filter(c => c.year===y && c.term===t);
 const yearCourses = y => state.courses.filter(c => c.year===y);
 
 /* ---------- render ---------- */
 function render(){
-  renderHero();
-  renderStats();
-  renderChart();
-  renderTabs();
-  renderPanel();
-  renderMe();
+  renderHero(); renderStats(); renderChart(); renderTabs(); renderPanel(); renderMe();
 }
 
 function renderHero(){
   const all = state.courses;
-  const w = gpa(all,true), u = gpa(all,false);
-  document.getElementById("cumW").textContent = w ? fmt(w.gpa) : "—";
-  document.getElementById("cumU").textContent = u ? fmt(u.gpa) : "—";
-  document.getElementById("cumW").classList.toggle("proj", state.sim && all.some(isSim));
+  const w = average(all,true), u = average(all,false);
+  const projecting = state.sim && all.some(isSim);
+  document.getElementById("readout").classList.toggle("projected", projecting);
+  document.getElementById("cumW").textContent = w ? f1(w.pct) : "—";
+  document.getElementById("cumW").classList.toggle("proj", projecting);
+  document.getElementById("sc100").textContent = w ? f1(toHundred(w.pct)) : "—";
+  document.getElementById("sc4").textContent   = w ? f2(toGpa(w.pct)) : "—";
+  document.getElementById("sc10").textContent  = w ? f2(toTen(w.pct)) : "—";
+
+  document.getElementById("cumU").textContent = u ? f1(u.pct) : "—";
+  document.getElementById("cumUAll").textContent = u ? `· ${f2(toGpa(u.pct))} /4.0 · ${f2(toTen(u.pct))} /10` : "";
 
   const graded = all.filter(isGraded);
   const open = all.filter(c => !isGraded(c));
   document.getElementById("credEarned").textContent = graded.reduce((s,c)=>s+c.credits,0).toFixed(1);
   document.getElementById("credOpen").textContent = open.reduce((s,c)=>s+c.credits,0).toFixed(1);
+  const yrs = new Set(all.map(c=>c.year)).size;
   document.getElementById("courseCount").textContent =
-    all.length ? `${all.length} class${all.length>1?"es":""} across ${new Set(all.map(c=>c.year)).size} year${new Set(all.map(c=>c.year)).size>1?"s":""}` : "no classes yet";
+    all.length ? `${all.length} class${all.length>1?"es":""} across ${yrs} year${yrs>1?"s":""}` : "no classes yet";
 
-  // delta from projections
   const dw = document.getElementById("deltaWrap");
   dw.innerHTML = "";
-  const actual = gpa(all.filter(isGraded), true);
+  const actual = average(all.filter(isGraded), true);
   if(state.sim && w && actual){
-    const d = w.gpa - actual.gpa;
-    if(Math.abs(d) >= 0.005){
+    const d = w.pct - actual.pct;
+    if(Math.abs(d) >= 0.05){
       const s = document.createElement("span");
       s.className = "delta";
-      s.textContent = `${d>0?"+":"−"}${Math.abs(d).toFixed(2)} vs. graded only`;
+      s.textContent = `${d>0?"+":"−"}${Math.abs(d).toFixed(1)} vs. graded only`;
       dw.appendChild(s);
     }
   }
@@ -553,24 +604,24 @@ function renderHero(){
 
 function renderStats(){
   const t = state.settings.target;
-  document.getElementById("targetVal").textContent = t.toFixed(2);
-  const cur = gpa(state.courses,true);
+  document.getElementById("targetVal").textContent = t.toFixed(1);
+  const cur = average(state.courses,true);
   const bar = document.getElementById("targetBar");
   const note = document.getElementById("targetNote");
   if(cur){
-    bar.style.width = Math.max(2, Math.min(100, (cur.gpa/t)*100)) + "%";
-    const graded = gpa(state.courses.filter(isGraded), true);
+    bar.style.width = Math.max(2, Math.min(100, (cur.pct/t)*100)) + "%";
+    const graded = average(state.courses.filter(isGraded), true);
     const remaining = state.courses.filter(c => !isGraded(c)).reduce((s,c)=>s+c.credits,0);
     if(graded && remaining > 0){
-      const need = (t*(graded.credits+remaining) - graded.qp) / remaining;
+      const need = (t*(graded.credits+remaining) - graded.sum) / remaining;
       note.textContent = need <= 0
         ? "Already past your target with the grades you have."
-        : need > 5.5
+        : need > 110
           ? `Out of reach with ${remaining.toFixed(1)} credits left — try nudging the target.`
-          : `Average ${need.toFixed(2)} across your last ${remaining.toFixed(1)} credits to land on it.`;
+          : `Average ${need.toFixed(1)} weighted across your last ${remaining.toFixed(1)} credits to land on it.`;
     } else {
-      const gap = t - cur.gpa;
-      note.textContent = gap <= 0 ? "You're at or above your target." : `${gap.toFixed(2)} below target right now.`;
+      const gap = t - cur.pct;
+      note.textContent = gap <= 0 ? "You're at or above your target." : `${gap.toFixed(1)} points below target right now.`;
     }
   } else {
     bar.style.width = "0";
@@ -579,56 +630,60 @@ function renderStats(){
 
   let best = null;
   SEMS.forEach(s => {
-    const g = gpa(semCourses(s.y,s.t), true);
-    if(g && (!best || g.gpa > best.g.gpa)) best = {s,g};
+    const g = average(semCourses(s.y,s.t), true);
+    if(g && (!best || g.pct > best.g.pct)) best = {s,g};
   });
-  document.getElementById("bestSem").textContent = best ? fmt(best.g.gpa) : "—";
+  document.getElementById("bestSem").textContent = best ? f1(best.g.pct) : "—";
   document.getElementById("bestSemNote").textContent = best
-    ? `${best.s.y}th grade, semester ${best.s.t==="S1"?"1":"2"}`
+    ? `${best.s.y}th grade, semester ${best.s.t==="S1"?"1":"2"} · ${f2(toGpa(best.g.pct))} /4.0`
     : "Add graded classes to compare terms.";
 
+  const w = average(state.courses,true), u = average(state.courses,false);
+  document.getElementById("loadVal").textContent = w && u ? `+${(w.pct-u.pct).toFixed(1)}` : "—";
   const counted = state.courses.filter(counts);
   const rigorous = counted.filter(c => c.level !== "Regular");
-  document.getElementById("loadVal").textContent = counted.length ? `${rigorous.length}/${counted.length}` : "—";
   document.getElementById("loadNote").textContent = counted.length
-    ? `${rigorous.length} weighted ${rigorous.length===1?"class":"classes"} of ${counted.length} counted`
-    : "Honors, AP and IB classes lift your weighted GPA.";
+    ? `${rigorous.length} of ${counted.length} counted ${counted.length===1?"class is":"classes are"} Honors or AP`
+    : "Honors and AP classes lift your weighted average.";
 }
 
 function renderChart(){
   const svg = document.getElementById("chart");
-  const W=720,H=250,L=42,R=16,T=16,B=34;
+  const W=720,H=250,L=44,R=16,T=16,B=34;
+  const FOREST="#00583D", GRAY="#8A9691", GREEN="#3BAE43", ORANGE="#D97757", LINE="#DFE6E2", LINE2="#C6D2CC";
   const pts = SEMS.map(s => {
     const list = semCourses(s.y,s.t);
-    const w = gpa(list,true), u = gpa(list,false);
-    const projected = list.filter(counts).some(isSim);
-    return {s, w:w?w.gpa:null, u:u?u.gpa:null, projected};
+    const w = average(list,true), u = average(list,false);
+    return {s, w:w?w.pct:null, u:u?u.pct:null, projected:list.filter(counts).some(isSim)};
   });
   const vals = pts.flatMap(p => [p.w,p.u]).filter(v => v!==null).concat([state.settings.target]);
-  const lo = vals.length ? Math.max(0, Math.floor((Math.min(...vals)-.3)*2)/2) : 2;
-  const hi = vals.length ? Math.min(6, Math.ceil((Math.max(...vals)+.3)*2)/2) : 5;
-  const span = Math.max(0.5, hi-lo);
+  let lo = vals.length ? Math.floor((Math.min(...vals)-2)/5)*5 : 80;
+  let hi = vals.length ? Math.ceil((Math.max(...vals)+2)/5)*5 : 105;
+  lo = Math.max(0, lo); hi = Math.min(115, Math.max(hi, lo+10));
+  const span = hi - lo;
   const x = i => L + i*((W-L-R)/(SEMS.length-1));
   const y = v => T + (1-(v-lo)/span)*(H-T-B);
 
   let g = "";
-  // grid
   for(let k=0;k<=4;k++){
     const v = lo + (span*k/4), yy = y(v);
-    g += `<line x1="${L}" x2="${W-R}" y1="${yy.toFixed(1)}" y2="${yy.toFixed(1)}" stroke="#E1E6F3" stroke-width="1"/>`;
-    g += `<text x="${L-9}" y="${(yy+4).toFixed(1)}" text-anchor="end" font-family="DM Mono, monospace" font-size="11" fill="#8A90A8">${v.toFixed(1)}</text>`;
+    g += `<line x1="${L}" x2="${W-R}" y1="${yy.toFixed(1)}" y2="${yy.toFixed(1)}" stroke="${LINE}" stroke-width="1"/>`;
+    g += `<text x="${L-9}" y="${(yy+4).toFixed(1)}" text-anchor="end" font-family="DM Mono, monospace" font-size="11" fill="${GRAY}">${v.toFixed(0)}</text>`;
   }
-  // year separators + labels
   YEARS.forEach((yr,i) => {
-    if(i>0){ const xx=(x(i*2-1)+x(i*2))/2; g += `<line x1="${xx.toFixed(1)}" x2="${xx.toFixed(1)}" y1="${T}" y2="${H-B}" stroke="#E1E6F3" stroke-dasharray="2 4"/>`; }
+    if(i>0){ const xx=(x(i*2-1)+x(i*2))/2; g += `<line x1="${xx.toFixed(1)}" x2="${xx.toFixed(1)}" y1="${T}" y2="${H-B}" stroke="${LINE}" stroke-dasharray="2 4"/>`; }
     const cx = (x(i*2)+x(i*2+1))/2;
-    g += `<text x="${cx.toFixed(1)}" y="${H-10}" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="11.5" font-weight="600" fill="#565C75">${yr}th grade</text>`;
+    g += `<text x="${cx.toFixed(1)}" y="${H-10}" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="11.5" font-weight="600" fill="#53625B">${yr}th grade</text>`;
   });
-  // target
   if(state.settings.target >= lo && state.settings.target <= hi){
     const ty = y(state.settings.target);
-    g += `<line x1="${L}" x2="${W-R}" y1="${ty.toFixed(1)}" y2="${ty.toFixed(1)}" stroke="#12996E" stroke-width="1.5" stroke-dasharray="6 5" opacity=".7"/>`;
-    g += `<text x="${W-R}" y="${(ty-7).toFixed(1)}" text-anchor="end" font-family="Public Sans" font-size="10.5" font-weight="700" fill="#12996E">TARGET</text>`;
+    g += `<line x1="${L}" x2="${W-R}" y1="${ty.toFixed(1)}" y2="${ty.toFixed(1)}" stroke="${GREEN}" stroke-width="1.5" stroke-dasharray="6 5"/>`;
+    g += `<text x="${W-R}" y="${(ty-7).toFixed(1)}" text-anchor="end" font-family="Public Sans" font-size="10.5" font-weight="700" fill="${GREEN}">TARGET</text>`;
+  }
+  if(hi > 100 && lo < 100){
+    const hy = y(100);
+    g += `<line x1="${L}" x2="${W-R}" y1="${hy.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="${LINE2}" stroke-width="1.5"/>`;
+    g += `<text x="${L+4}" y="${(hy-6).toFixed(1)}" font-family="Public Sans" font-size="10.5" font-weight="700" fill="${GRAY}">100</text>`;
   }
 
   function series(key,color,width){
@@ -636,27 +691,26 @@ function renderChart(){
     for(let i=0;i<pts.length-1;i++){
       const a=pts[i], b=pts[i+1];
       if(a[key]===null || b[key]===null) continue;
-      const dash = (a.projected||b.projected) ? ' stroke-dasharray="5 5"' : "";
-      out += `<line x1="${x(i).toFixed(1)}" y1="${y(a[key]).toFixed(1)}" x2="${x(i+1).toFixed(1)}" y2="${y(b[key]).toFixed(1)}" stroke="${color}" stroke-width="${width}" stroke-linecap="round"${dash}/>`;
+      const proj = a.projected||b.projected;
+      out += `<line x1="${x(i).toFixed(1)}" y1="${y(a[key]).toFixed(1)}" x2="${x(i+1).toFixed(1)}" y2="${y(b[key]).toFixed(1)}" stroke="${proj?ORANGE:color}" stroke-width="${width}" stroke-linecap="round"${proj?' stroke-dasharray="5 5"':""}/>`;
     }
     pts.forEach((p,i) => {
       if(p[key]===null) return;
       out += p.projected
-        ? `<circle cx="${x(i).toFixed(1)}" cy="${y(p[key]).toFixed(1)}" r="4.5" fill="#fff" stroke="${color}" stroke-width="2"/>`
+        ? `<circle cx="${x(i).toFixed(1)}" cy="${y(p[key]).toFixed(1)}" r="4.5" fill="#fff" stroke="${ORANGE}" stroke-width="2"/>`
         : `<circle cx="${x(i).toFixed(1)}" cy="${y(p[key]).toFixed(1)}" r="4.5" fill="${color}"/>`;
     });
     return out;
   }
-  g += series("u","#8A90A8",2);
-  g += series("w","#3A32D8",2.75);
+  g += series("u",GRAY,2);
+  g += series("w",FOREST,2.75);
 
-  // value label on latest weighted point
   const last = [...pts].reverse().find(p => p.w!==null);
   if(last){
     const i = pts.indexOf(last);
-    g += `<text x="${x(i).toFixed(1)}" y="${(y(last.w)-13).toFixed(1)}" text-anchor="middle" font-family="DM Mono, monospace" font-size="13" fill="#3A32D8">${last.w.toFixed(2)}</text>`;
+    g += `<text x="${x(i).toFixed(1)}" y="${(y(last.w)-13).toFixed(1)}" text-anchor="middle" font-family="DM Mono, monospace" font-size="13" fill="${last.projected?ORANGE:FOREST}">${last.w.toFixed(1)}</text>`;
   } else {
-    g += `<text x="${W/2}" y="${H/2}" text-anchor="middle" font-family="Public Sans" font-size="13.5" fill="#8A90A8">Your line starts with your first graded class.</text>`;
+    g += `<text x="${W/2}" y="${H/2}" text-anchor="middle" font-family="Public Sans" font-size="13.5" fill="${GRAY}">Your line starts with your first graded class.</text>`;
   }
   svg.innerHTML = g;
 }
@@ -665,30 +719,40 @@ function renderTabs(){
   const el = document.getElementById("tabs");
   el.innerHTML = "";
   YEARS.forEach(y => {
-    const g = gpa(yearCourses(y), true);
+    const g = average(yearCourses(y), true);
     const b = document.createElement("button");
     b.className = "tab"; b.role = "tab";
     b.setAttribute("aria-selected", String(y===activeYear));
-    b.innerHTML = `${y}th grade <span class="g">${g?fmt(g.gpa):"—"}</span>`;
+    b.innerHTML = `${y}th grade <span class="g">${g?f1(g.pct):"—"}</span>`;
     b.onclick = () => { activeYear = y; renderTabs(); renderPanel(); };
     el.appendChild(b);
   });
 }
+const levelStyle = id => LEVELS.find(x=>x.id===id) || LEVELS[0];
 
-function levelStyle(id){
-  const l = LEVELS.find(x=>x.id===id) || LEVELS[0];
-  return l;
+function termPills(list){
+  const w = average(list,true), u = average(list,false);
+  const cr = list.filter(counts).reduce((s,c)=>s+c.credits,0);
+  return `<span class="pill">Weighted <b>${w?f1(w.pct):"—"}</b></span>
+          <span class="pill">4.0 <b>${w?f2(toGpa(w.pct)):"—"}</b></span>
+          <span class="pill">/10 <b>${w?f2(toTen(w.pct)):"—"}</b></span>
+          <span class="pill muted">Unweighted <b>${u?f1(u.pct):"—"}</b></span>
+          <span class="pill muted">${cr.toFixed(1)} cr</span>`;
+}
+function rowMath(c){
+  const wp = wtdPct(c);
+  if(wp === null || !counts(c)) return "&nbsp;";
+  return `<span class="bump">+${bumpFor(c)}</span> → ${wp.toFixed(1)} <span class="band">${bandFor(Math.min(wp,100))[1]}</span>`;
 }
 
 function renderPanel(){
   const p = document.getElementById("panel");
   p.innerHTML = "";
-  const yc = yearCourses(activeYear);
 
   if(!state.courses.length){
     p.innerHTML = `<div class="empty">
       <h3>Nothing here yet</h3>
-      <p>Add the classes on your schedule — name, credits, difficulty, and a grade if you have one.</p>
+      <p>Add the classes on your schedule — name, credits, difficulty, and a percentage if you have one.</p>
       <button class="solid" id="emptyAdd">Add your first class</button>
       <button class="ghost" id="emptySample" style="margin-left:8px">Try a sample year</button>
     </div>`;
@@ -697,18 +761,15 @@ function renderPanel(){
     return;
   }
 
+  const yc = yearCourses(activeYear);
   TERMS.forEach(t => {
     const list = yc.filter(c => c.term===t);
     const wrap = document.createElement("div");
     wrap.className = "term";
-    const w = gpa(list,true), u = gpa(list,false);
-    const cr = list.filter(counts).reduce((s,c)=>s+c.credits,0);
     wrap.innerHTML = `<div class="term-head">
         <h4>Semester ${t==="S1"?"1":"2"}</h4>
         <div class="sp"></div>
-        <span class="pill">Weighted <b>${w?fmt(w.gpa):"—"}</b></span>
-        <span class="pill">Unweighted <b>${u?fmt(u.gpa):"—"}</b></span>
-        <span class="pill">${cr.toFixed(1)} cr</span>
+        ${termPills(list)}
       </div>`;
 
     if(!list.length){
@@ -722,15 +783,14 @@ function renderPanel(){
       const l = levelStyle(c.level);
       const row = document.createElement("div");
       row.className = "row";
-      const pw = points(c,true), pu = points(c,false);
       row.innerHTML = `
         <div class="cname">
           <span class="swatch" style="background:${l.hex}"></span>
-          <span class="t"><b></b><small>${c.credits.toFixed(2).replace(/0$/,"")} credits</small></span>
+          <span class="t"><b></b><small>${String(c.credits)} credits</small></span>
         </div>
         <div class="lvlcell"><span class="lvl" style="color:${l.hex};background:${l.hex}14">${l.short}</span></div>
         <div class="gradecell"></div>
-        <div class="gpt">${pw!==null&&counts(c) ? `${pw.toFixed(2)} w · ${pu.toFixed(2)} u` : "&nbsp;"}</div>
+        <div class="math">${rowMath(c)}</div>
         <div class="acts">
           <button class="icon" title="Edit"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
           <button class="icon del" title="Delete"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
@@ -739,19 +799,25 @@ function renderPanel(){
 
       const gc = row.querySelector(".gradecell");
       if(isGraded(c)){
-        gc.innerHTML = `<div class="grade">${c.grade}</div>`;
+        gc.innerHTML = `<div class="grade" title="${bandFor(num(c.grade))[1]}">${num(c.grade)}</div>`;
       } else {
-        const sel = document.createElement("select");
-        sel.className = "sim-select";
-        sel.title = "Projected grade";
-        sel.innerHTML = `<option value="">—</option>` + GRADES.map(([g])=>`<option value="${g}">${g}</option>`).join("");
-        sel.value = c.sim || "";
-        sel.onchange = () => {
-          c.sim = sel.value || null;
-          if(c.sim && !state.sim){ state.sim = true; document.getElementById("simToggle").checked = true; }
-          save(); render();
+        const inp = document.createElement("input");
+        inp.type = "number"; inp.className = "sim-input"; inp.placeholder = "—";
+        inp.min = 0; inp.max = 110; inp.step = 0.1;
+        inp.title = "Projected grade";
+        inp.value = c.sim ?? "";
+        inp.oninput = () => {
+          const v = num(inp.value);
+          c.sim = v === null ? null : Math.max(0, Math.min(110, v));
+          if(c.sim !== null && !state.sim){ state.sim = true; document.getElementById("simToggle").checked = true; }
+          save();
+          // Repaint everything except this input, so the cursor stays put.
+          renderHero(); renderStats(); renderChart(); renderTabs();
+          const head = wrap.querySelector(".term-head");
+          if(head) head.innerHTML = `<h4>Semester ${t==="S1"?"1":"2"}</h4><div class="sp"></div>${termPills(list)}`;
+          row.querySelector(".math").innerHTML = rowMath(c);
         };
-        gc.appendChild(sel);
+        gc.appendChild(inp);
       }
 
       const [editBtn, delBtn] = row.querySelectorAll(".acts button");
@@ -775,7 +841,7 @@ function renderPanel(){
 function renderMe(){
   const el = document.getElementById("me");
   const pf = state.profile;
-  if(pf.picture) el.innerHTML = `<img src="${pf.picture}" alt="" />`;
+  if(pf.picture){ el.innerHTML = ""; const im = new Image(); im.src = pf.picture; im.alt = ""; el.appendChild(im); }
   else el.textContent = (pf.name || "?").trim().charAt(0).toUpperCase();
   el.title = pf.name ? `${pf.name}${pf.email?" · "+pf.email:""} — click to sign out` : "Sign in";
 }
@@ -787,7 +853,8 @@ function buildLevelChips(selected){
   box.innerHTML = "";
   LEVELS.forEach(l => {
     const b = document.createElement("button");
-    b.type = "button"; b.className = "chip"; b.textContent = l.id;
+    b.type = "button"; b.className = "chip";
+    b.innerHTML = `${l.id}<small>+${state.settings.bumps[l.id] ?? 0}</small>`;
     b.dataset.level = l.id;
     const on = l.id === selected;
     b.setAttribute("aria-pressed", String(on));
@@ -795,16 +862,22 @@ function buildLevelChips(selected){
     b.onclick = () => buildLevelChips(l.id);
     box.appendChild(b);
   });
+  updateGradeNote();
 }
 function selectedLevel(){
   const b = document.querySelector('#fLevel .chip[aria-pressed="true"]');
   return b ? b.dataset.level : "Regular";
 }
-function fillGradeSelect(){
-  const s = document.getElementById("fGrade");
-  s.innerHTML = `<option value="">Not graded yet</option>` +
-    GRADES.map(([g,v]) => `<option value="${g}">${g} — ${v.toFixed(1)}</option>`).join("");
+function updateGradeNote(){
+  const g = num(document.getElementById("fGrade").value);
+  const note = document.getElementById("fGradeNote");
+  if(g === null){ note.textContent = "Leave blank for a class you're planning or still taking."; return; }
+  const bump = state.settings.bumps[selectedLevel()] ?? 0;
+  const w = g + bump;
+  note.textContent = `${bandFor(g)[1]} · weighted ${w.toFixed(1)} /100 · ${f2(toGpa(w))} /4.0 · ${f2(toTen(w))} /10`;
 }
+document.getElementById("fGrade").addEventListener("input", updateGradeNote);
+
 function openCourse(id=null, preset={}){
   editingId = id;
   const c = id ? state.courses.find(x=>x.id===id) : null;
@@ -814,8 +887,7 @@ function openCourse(id=null, preset={}){
   document.getElementById("fYear").value = String(c ? c.year : (preset.year || activeYear));
   document.getElementById("fTerm").value = c ? c.term : (preset.term || "S1");
   document.getElementById("fCredits").value = c ? c.credits : 1;
-  fillGradeSelect();
-  document.getElementById("fGrade").value = c && c.grade ? c.grade : "";
+  document.getElementById("fGrade").value = c && isGraded(c) ? num(c.grade) : "";
   buildLevelChips(c ? c.level : "Regular");
   dlg.showModal();
   setTimeout(()=>document.getElementById("fName").focus(),30);
@@ -823,19 +895,20 @@ function openCourse(id=null, preset={}){
 document.getElementById("fCancel").onclick = () => dlg.close();
 document.getElementById("courseForm").addEventListener("submit", e => {
   const name = document.getElementById("fName").value.trim();
-  if(!name) { e.preventDefault(); return; }
+  if(!name){ e.preventDefault(); return; }
+  const gv = num(document.getElementById("fGrade").value);
   const data = {
     name,
     year: Number(document.getElementById("fYear").value),
     term: document.getElementById("fTerm").value,
     credits: Math.max(0, Number(document.getElementById("fCredits").value) || 0),
     level: selectedLevel(),
-    grade: document.getElementById("fGrade").value || null
+    grade: gv === null ? null : Math.max(0, Math.min(110, gv))
   };
   if(editingId){
     const c = state.courses.find(x=>x.id===editingId);
     Object.assign(c, data);
-    if(c.grade) c.sim = null;
+    if(isGraded(c)) c.sim = null;
     toast(`Updated ${c.name}`);
   } else {
     state.courses.push(Object.assign({id:crypto.randomUUID(), sim:null}, data));
@@ -849,16 +922,19 @@ document.getElementById("courseForm").addEventListener("submit", e => {
 const sdlg = document.getElementById("settingsDialog");
 document.getElementById("settingsBtn").onclick = () => {
   document.getElementById("sTarget").value = state.settings.target;
+  document.getElementById("sReg").value = state.settings.bumps.Regular;
   document.getElementById("sHon").value = state.settings.bumps.Honors;
   document.getElementById("sAp").value = state.settings.bumps.AP;
-  document.getElementById("sIb").value = state.settings.bumps.IB;
+  document.getElementById("sScale").value = state.settings.scale;
   sdlg.showModal();
 };
 document.getElementById("settingsForm").addEventListener("submit", () => {
-  state.settings.target = Number(document.getElementById("sTarget").value) || 4;
-  state.settings.bumps.Honors = Number(document.getElementById("sHon").value) || 0;
-  state.settings.bumps.AP = Number(document.getElementById("sAp").value) || 0;
-  state.settings.bumps.IB = Number(document.getElementById("sIb").value) || 0;
+  const t = num(document.getElementById("sTarget").value);
+  state.settings.target = t === null ? 95 : Math.max(0, Math.min(110, t));
+  state.settings.bumps.Regular = num(document.getElementById("sReg").value) ?? 0;
+  state.settings.bumps.Honors = num(document.getElementById("sHon").value) ?? 0;
+  state.settings.bumps.AP = num(document.getElementById("sAp").value) ?? 0;
+  state.settings.scale = document.getElementById("sScale").value;
   save(); render(); toast("Settings saved");
 });
 document.getElementById("sReset").onclick = async () => {
@@ -875,6 +951,38 @@ document.getElementById("sReset").onclick = async () => {
 /* ---------- misc wiring ---------- */
 document.getElementById("addBtn").onclick = () => openCourse();
 document.getElementById("simToggle").onchange = e => { state.sim = e.target.checked; save(); render(); };
+let toastT;
+function toast(msg){
+  const el = document.getElementById("toast");
+  el.textContent = msg; el.classList.add("on");
+  clearTimeout(toastT); toastT = setTimeout(()=>el.classList.remove("on"), 2200);
+}
+function loadSample(){
+  const mk = (name,level,term,grade,credits=1) => ({id:crypto.randomUUID(),name,level,year:9,term,credits,grade,sim:null});
+  state.courses.push(
+    mk("Honors Biology","Honors","S1",91), mk("Honors Biology","Honors","S2",93),
+    mk("Geometry","Regular","S1",88), mk("Geometry","Regular","S2",90),
+    mk("World Literature","Regular","S1",94), mk("World Literature","Regular","S2",95),
+    mk("AP Human Geography","AP","S1",89), mk("AP Human Geography","AP","S2",92),
+    mk("Spanish II","Regular","S1",93,0.5)
+  );
+  activeYear = 9; save(); render(); toast("Sample year loaded — edit or delete anything");
+}
+
+/* ---------- sign in ---------- */
+let fb = null;
+function closeGate(){ document.getElementById("gate").style.display = "none"; }
+function finishSignIn(profile){
+  state.profile = profile; saveLocal(); closeGate(); renderMe();
+}
+document.getElementById("localBtn").onclick = () => {
+  const n = document.getElementById("localName").value.trim() || "Student";
+  finishSignIn({name:n, email:null, picture:null});
+  setSync("local", "This device only");
+};
+document.getElementById("localName").addEventListener("keydown", e => {
+  if(e.key === "Enter") document.getElementById("localBtn").click();
+});
 document.getElementById("me").onclick = async () => {
   if(!state.profile.name){ document.getElementById("gate").style.display = "grid"; return; }
   if(!confirm("Sign out? Your classes stay saved on this device.")) return;
@@ -885,67 +993,18 @@ document.getElementById("me").onclick = async () => {
   setSync("local", "This device only");
   document.getElementById("gate").style.display = "grid";
 };
-let toastT;
-function toast(msg){
-  const el = document.getElementById("toast");
-  el.textContent = msg; el.classList.add("on");
-  clearTimeout(toastT); toastT = setTimeout(()=>el.classList.remove("on"), 2200);
-}
-
-function loadSample(){
-  const mk = (name,level,term,grade,credits=1) => ({id:crypto.randomUUID(),name,level,year:9,term,credits,grade,sim:null});
-  state.courses.push(
-    mk("Honors Biology","Honors","S1","A-"), mk("Honors Biology","Honors","S2","A"),
-    mk("Geometry","Regular","S1","B+"), mk("Geometry","Regular","S2","A-"),
-    mk("World Literature","Regular","S1","A"), mk("World Literature","Regular","S2","A"),
-    mk("AP Human Geography","AP","S1","B+"), mk("AP Human Geography","AP","S2","A-"),
-    mk("Spanish II","Regular","S1","A-",0.5)
-  );
-  activeYear = 9; save(); render(); toast("Sample year loaded — edit or delete anything");
-}
-
-/* ---------- sign in ---------- */
-let fb = null;   // loaded Firebase modules
-
-function closeGate(){ document.getElementById("gate").style.display = "none"; }
-function openGate(){ document.getElementById("gate").style.display = "grid"; }
-
-function finishSignIn(profile){
-  state.profile = profile;
-  saveLocal();
-  closeGate();
-  renderMe();
-}
-document.getElementById("localBtn").onclick = () => {
-  const n = document.getElementById("localName").value.trim() || "Student";
-  finishSignIn({name:n, email:null, picture:null});
-  setSync("local", "This device only");
-};
-document.getElementById("localName").addEventListener("keydown", e => {
-  if(e.key === "Enter") document.getElementById("localBtn").click();
-});
-
 document.getElementById("googleBtn").onclick = async () => {
-  if(!firebaseReady()){
-    toast("Add your Firebase config to turn this on");
-    document.getElementById("localName").focus();
-    return;
-  }
+  if(!firebaseReady()){ toast("Add your Firebase config to turn this on"); document.getElementById("localName").focus(); return; }
+  if(!fb){ toast("Still loading Firebase — try again in a second"); return; }
   const btn = document.getElementById("googleBtn");
   btn.disabled = true;
   try{
     await fb.signInWithPopup(fb.auth, new fb.GoogleAuthProvider());
   }catch(e){
     toast(e.code === "auth/popup-closed-by-user" ? "Sign-in cancelled" : "Sign-in failed — check your Firebase setup");
-  }finally{
-    btn.disabled = false;
-  }
+  }finally{ btn.disabled = false; }
 };
 
-function sdkBase(){
-  try{ if(typeof SDK !== "undefined" && SDK) return SDK; }catch(e){}
-  return "https://www.gstatic.com/firebasejs/11.0.2";
-}
 async function initFirebase(){
   if(!firebaseReady()) return;
   const base = sdkBase();
@@ -957,13 +1016,14 @@ async function initFirebase(){
     ]);
     const app = appMod.initializeApp(fbConfig());
 
-    // Analytics is best-effort: it's blocked inside sandboxed frames and by
-    // plenty of browser extensions, so it must never take the app down.
+    // Analytics is best-effort: blocked in sandboxed frames and by plenty of
+    // extensions, so it must never take the app down.
     if(fbConfig().measurementId){
       import(`${base}/firebase-analytics.js`)
         .then(m => m.isSupported().then(ok => { if(ok) m.getAnalytics(app); }))
         .catch(() => {});
     }
+
     fb = {
       auth: authMod.getAuth(app),
       db: dbMod.getFirestore(app),
@@ -972,8 +1032,6 @@ async function initFirebase(){
       signOut: authMod.signOut,
       doc: dbMod.doc, getDoc: dbMod.getDoc, setDoc: dbMod.setDoc, onSnapshot: dbMod.onSnapshot
     };
-    document.getElementById("gateNote").textContent =
-      "Signing in with Google saves your coursework to your account, so it follows you to any device.";
     authMod.onAuthStateChanged(fb.auth, user => user ? attachCloud(user) : detachCloud());
   }catch(e){
     console.warn("Firebase failed to load", e);
@@ -987,7 +1045,6 @@ async function attachCloud(user){
   cloud = {ref, setDoc: fb.setDoc};
   state.profile = {name: user.displayName ? user.displayName.split(" ")[0] : "Student", email: user.email, picture: user.photoURL};
   setSync("saving", "Loading your classes…");
-
   try{
     const snap = await fb.getDoc(ref);
     if(snap.exists() && (snap.data().courses || []).length){
@@ -998,15 +1055,11 @@ async function attachCloud(user){
       applyingRemote = false;
       saveLocal();
     } else {
-      // first sign-in on this account: lift whatever is already on this device
       await fb.setDoc(ref, payload(), {merge:true});
     }
     setSync("ok", "Synced");
-  }catch(e){
-    setSync("offline", "Couldn't reach the cloud — saved on this device");
-  }
+  }catch(e){ setSync("offline", "Couldn't reach the cloud — saved on this device"); }
 
-  // keep other devices in step
   fb.onSnapshot(ref, snap => {
     if(!snap.exists() || snap.metadata.hasPendingWrites) return;
     const d = snap.data();
@@ -1026,11 +1079,7 @@ async function attachCloud(user){
   closeGate();
   render();
 }
-
-function detachCloud(){
-  cloud = null;
-  clearTimeout(cloudTimer);
-}
+function detachCloud(){ cloud = null; clearTimeout(cloudTimer); }
 
 /* ---------- boot ---------- */
 (async function(){
