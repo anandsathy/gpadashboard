@@ -1,0 +1,63 @@
+name: Deploy to GitHub Pages
+
+# Optional. The site already publishes without this workflow, because the build
+# output is committed at the repository root and Pages can serve the default
+# branch directly.
+#
+# Use this instead if you would rather Pages built from source on every push:
+#   Settings → Pages → Build and deployment → Source: "GitHub Actions"
+# With that set, this workflow becomes the deployment and the committed build at
+# the root is ignored by Pages (though CI still checks it stays in step).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; let a newer push wait rather than cancel, so a
+# half-finished deploy is not what lands.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      # The build writes index.html + assets/ to the repository root, so that is
+      # what gets uploaded — minus the source tree Pages has no use for.
+      - name: Stage the site
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp -r assets _site/
+          cp app/public/* _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

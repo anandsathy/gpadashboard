@@ -1,0 +1,22 @@
+node_modules/
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+
+# Vite / tooling caches
+.vite/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# NOTE: index.html, assets/, and the copied icons at the repository root are
+# build output and ARE committed on purpose — GitHub Pages serves this repo's
+# default branch root, so the published site is those files. `npm run build`
+# regenerates all of them. See README → "How this gets published".

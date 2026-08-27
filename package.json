@@ -1,0 +1,35 @@
+{
+  "name": "gpa-dashboard",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "GPA Dashboard — weighted & unweighted GPA tracking for grades 9-12, in Westminster forest green.",
+  "scripts": {
+    "dev": "vite",
+    "prebuild": "node scripts/clean-build.mjs",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "build:only": "node scripts/clean-build.mjs && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "icons": "node scripts/make-icons.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm run test"
+  },
+  "dependencies": {
+    "firebase": "^11.10.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.6.0",
+    "playwright": "^1.62.1",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
+  }
+}
