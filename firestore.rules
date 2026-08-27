@@ -1,0 +1,48 @@
+rules_version = '2';
+
+// Security rules for GPA Dashboard.
+//
+// Deploy with:  firebase deploy --only firestore:rules
+// Or paste into: Firebase Console → Firestore Database → Rules
+//
+// The web API key in the client is a public project identifier, not a secret.
+// These rules are what actually protect a student's grades: a signed-in user
+// can read and write exactly one document — their own — and nothing else in the
+// database is reachable at all.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /students/{uid} {
+      // Owner-only. `request.auth` is null for anonymous callers, so the
+      // null-check has to come first or the comparison throws.
+      allow read: if request.auth != null && request.auth.uid == uid;
+
+      allow create, update: if request.auth != null
+                            && request.auth.uid == uid
+                            && isValidStudentDoc(request.resource.data);
+
+      // Deleting the document is not something the app ever does; erasing
+      // coursework writes an empty course list instead. Denying it here means a
+      // stolen token cannot wipe a transcript outright.
+      allow delete: if false;
+    }
+
+    // Anything not matched above is denied. This is the default, but stating it
+    // makes the intent explicit for whoever reads these rules next.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+// Shape check: enough to stop a malformed or hostile write from poisoning the
+// document, without trying to re-implement the client's validation in a rules
+// language that is bad at it. The client hydrates defensively regardless.
+function isValidStudentDoc(data) {
+  return data.keys().hasOnly(['version', 'courses', 'settings', 'updatedAt'])
+         && data.courses is list
+         && data.courses.size() <= 400
+         && data.settings is map
+         && data.version is number;
+}

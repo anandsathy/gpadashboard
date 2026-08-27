@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="GPA Dashboard">
+  <rect width="512" height="512" rx="112" fill="#014421"/>
+  <!-- Laurel: a leafed stem, drawn to read at 32px as well as at 512. -->
+  <g transform="translate(256 262)" fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 -132C-74 -96 -112 -32 -112 42 -112 116 -66 168 0 196 66 168 112 116 112 42 112 -32 74 -96 0 -132Z" stroke-width="19" opacity="0.32"/>
+    <path d="M0 -104V166" stroke-width="19"/>
+    <g stroke-width="17">
+      <path d="M0 -62C-30 -80 -54 -74 -70 -46M0 -62C30 -80 54 -74 70 -46"/>
+      <path d="M0 -4C-30 -22 -54 -16 -70 12M0 -4C30 -22 54 -16 70 12"/>
+      <path d="M0 54C-26 38 -47 43 -61 67M0 54C26 38 47 43 61 67"/>
+    </g>
+  </g>
+</svg>

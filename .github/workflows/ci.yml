@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Typecheck, test, build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build:only
+
+      # The published site is the build output committed at the repository root
+      # (see README → "How this gets published"). Vite's hashes are content
+      # derived, so a clean rebuild of unchanged source reproduces them exactly.
+      # A diff here means someone edited source without running `npm run build`.
+      - name: Committed build is up to date
+        run: |
+          if ! git diff --quiet -- index.html assets; then
+            echo "::error::The committed build is stale. Run 'npm run build' and commit the result."
+            git --no-pager diff --stat -- index.html assets
+            exit 1
+          fi
+          echo "Committed build matches source."
