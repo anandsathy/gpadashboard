@@ -55,7 +55,8 @@ npm run dev        # http://localhost:5173
 | Script | What it does |
 | --- | --- |
 | `npm run dev` | Dev server with hot reload |
-| `npm run build` | Typecheck, then build to the repository root |
+| `npm run build` | Typecheck, then build to the repository root (GitHub Pages) |
+| `npm run build:dist` | Typecheck, then build to `dist/` (Cloudflare Pages, Netlify, Vercel) |
 | `npm test` | Unit tests for the GPA engine |
 | `npm run typecheck` | TypeScript, no emit |
 | `npm run check` | Typecheck + tests |
@@ -81,6 +82,48 @@ published site keeps serving the previous version.
 
 If you would rather Pages built from source itself, set **Settings → Pages → Source** to
 *GitHub Actions*; `.github/workflows/deploy.yml` is already written and will take over.
+
+### Cloudflare Pages
+
+Use `npm run build:dist` and deploy `dist/`. **Do not** point the output directory at the
+repository root — that is the GitHub Pages layout, and it would publish the entire source tree.
+
+In the Cloudflare dashboard, **Workers & Pages → Create → Pages → Connect to Git**:
+
+| Setting | Value |
+| --- | --- |
+| Framework preset | None |
+| Build command | `npm run build:dist` |
+| Build output directory | `dist` |
+| Root directory | *(leave blank)* |
+
+Then set one environment variable, under **Settings → Environment variables**, for both Production
+and Preview:
+
+```
+NODE_VERSION = 20
+```
+
+Cloudflare's default Node is older than Vite 6 supports, and the build fails without this.
+(`.nvmrc` pins 20 as well, which Cloudflare also honours — the variable is the belt to its braces.)
+
+Nothing else is required:
+
+- **No `_redirects` file.** The app uses a hash router (`#/classes`), so every route is served by
+  `index.html` already. There are no deep paths for Cloudflare to 404 on.
+- **`_headers` is included** — hashed assets get a one-year immutable cache, while `index.html` and
+  `sw.js` get `no-cache` so a deploy is visible immediately rather than after a hard refresh.
+- **`base: "./"`** means the same build works on `*.pages.dev` and on a custom domain with no
+  reconfiguration.
+
+**One thing you must do by hand:** add your Cloudflare domain to Firebase, or Google sign-in fails
+with `auth/unauthorized-domain`. In the Firebase Console → **Authentication → Settings → Authorized
+domains**, add `your-project.pages.dev` and any custom domain you attach. Preview deployments get
+per-commit subdomains that cannot be pre-authorized, so sign-in will not work on those — the rest of
+the app still will, since it runs fine signed out.
+
+Deploying to Netlify or Vercel is the same three answers: build `npm run build:dist`, publish
+`dist`, Node 20.
 
 ---
 

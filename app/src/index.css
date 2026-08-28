@@ -1,4 +1,16 @@
-@import "tailwindcss";
+/*
+ * Sources are declared explicitly rather than left to automatic detection.
+ *
+ * Auto-detection scans the whole project, which here would include `app/public`
+ * and the build output committed at the repository root. Both are hazards: a
+ * stray English word in a comment ("…stays invisible until…") gets mistaken for
+ * a class name and emits a utility, and scanning the previous build's CSS makes
+ * each build depend on the one before it. Naming the two real sources keeps the
+ * output a pure function of the source tree, which is what CI asserts.
+ */
+@import "tailwindcss" source(none);
+@source "../index.html";
+@source "./**/*.{ts,tsx}";
 
 /* ==========================================================================
    GPA Dashboard — Westminster palette

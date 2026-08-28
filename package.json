@@ -9,6 +9,7 @@
     "prebuild": "node scripts/clean-build.mjs",
     "build": "tsc --noEmit -p tsconfig.json && vite build",
     "build:only": "node scripts/clean-build.mjs && vite build",
+    "build:dist": "tsc --noEmit -p tsconfig.json && vite build --outDir ../dist --emptyOutDir",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "icons": "node scripts/make-icons.mjs",
