@@ -83,47 +83,58 @@ published site keeps serving the previous version.
 If you would rather Pages built from source itself, set **Settings → Pages → Source** to
 *GitHub Actions*; `.github/workflows/deploy.yml` is already written and will take over.
 
-### Cloudflare Pages
+### Cloudflare Workers
 
-Use `npm run build:dist` and deploy `dist/`. **Do not** point the output directory at the
-repository root — that is the GitHub Pages layout, and it would publish the entire source tree.
+This repository is connected to a Workers Builds project deploying the `gpadashboard` Worker as a
+static site. [`wrangler.jsonc`](./wrangler.jsonc) is what makes that work — Workers Builds finishes
+with `npx wrangler deploy`, and without a Wrangler config that step fails immediately with nothing
+to upload.
 
-In the Cloudflare dashboard, **Workers & Pages → Create → Pages → Connect to Git**:
+Set these in the Cloudflare dashboard, under **Workers & Pages → gpadashboard → Settings → Build**:
 
 | Setting | Value |
 | --- | --- |
-| Framework preset | None |
 | Build command | `npm run build:dist` |
-| Build output directory | `dist` |
+| Deploy command | `npx wrangler deploy` |
 | Root directory | *(leave blank)* |
 
-Then set one environment variable, under **Settings → Environment variables**, for both Production
-and Preview:
+And one environment variable, under **Settings → Variables**, for Production and Preview both:
 
 ```
 NODE_VERSION = 20
 ```
 
-Cloudflare's default Node is older than Vite 6 supports, and the build fails without this.
-(`.nvmrc` pins 20 as well, which Cloudflare also honours — the variable is the belt to its braces.)
+Cloudflare's default Node is older than Vite 6 supports, and the build fails without it. (`.nvmrc`
+pins 20 as well, which Workers Builds also honours — the variable is the belt to its braces.)
 
-Nothing else is required:
+The build command matters: `wrangler deploy` uploads `dist/`, and nothing creates `dist/` unless the
+build runs first. To deploy from your own machine instead, `npm run deploy` does both steps.
 
-- **No `_redirects` file.** The app uses a hash router (`#/classes`), so every route is served by
-  `index.html` already. There are no deep paths for Cloudflare to 404 on.
-- **`_headers` is included** — hashed assets get a one-year immutable cache, while `index.html` and
-  `sw.js` get `no-cache` so a deploy is visible immediately rather than after a hard refresh.
-- **`base: "./"`** means the same build works on `*.pages.dev` and on a custom domain with no
-  reconfiguration.
+**Do not** point the asset directory at the repository root — that is the GitHub Pages layout, and
+it would publish the entire source tree.
 
-**One thing you must do by hand:** add your Cloudflare domain to Firebase, or Google sign-in fails
-with `auth/unauthorized-domain`. In the Firebase Console → **Authentication → Settings → Authorized
-domains**, add `your-project.pages.dev` and any custom domain you attach. Preview deployments get
-per-commit subdomains that cannot be pre-authorized, so sign-in will not work on those — the rest of
-the app still will, since it runs fine signed out.
+### Cloudflare Pages
 
-Deploying to Netlify or Vercel is the same three answers: build `npm run build:dist`, publish
-`dist`, Node 20.
+Pages is in maintenance mode for new projects, so prefer Workers above. If you do use it:
+build command `npm run build:dist`, output directory `dist`, framework preset None, and the same
+`NODE_VERSION = 20`. Netlify and Vercel are the same three answers.
+
+### Notes that apply to all of them
+
+- **No `_redirects` file needed.** The app routes on the hash (`#/classes`), so the server only ever
+  sees `/`. `not_found_handling: "single-page-application"` in `wrangler.jsonc` is belt and braces
+  for stray paths.
+- **`_headers` is included** and is supported natively by both Workers and Pages: hashed assets get
+  a one-year immutable cache, while `index.html` and `sw.js` get `no-cache` so a deploy is visible
+  immediately rather than after a hard refresh.
+- **`base: "./"`** means one build works on `*.workers.dev`, `*.pages.dev`, and a custom domain with
+  no reconfiguration.
+
+**One thing you must do by hand:** add the deployed domain to Firebase, or Google sign-in fails with
+`auth/unauthorized-domain`. Firebase Console → **Authentication → Settings → Authorized domains** →
+add `gpadashboard.<your-subdomain>.workers.dev` and any custom domain you attach. Preview
+deployments get per-commit subdomains that cannot be pre-authorized, so sign-in will not work there
+— the rest of the app still will, since it runs fine signed out.
 
 ---
 

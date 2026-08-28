@@ -10,6 +10,7 @@
     "build": "tsc --noEmit -p tsconfig.json && vite build",
     "build:only": "node scripts/clean-build.mjs && vite build",
     "build:dist": "tsc --noEmit -p tsconfig.json && vite build --outDir ../dist --emptyOutDir",
+    "deploy": "npm run build:dist && wrangler deploy",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "icons": "node scripts/make-icons.mjs",
@@ -31,6 +32,7 @@
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "wrangler": "^4.127.0"
   }
 }
