@@ -1,0 +1,30 @@
+# Cloudflare Pages response headers.
+#
+# Ignored by GitHub Pages, which is why this can live in the shared public
+# directory without doing any harm there.
+
+# Hashed build assets: the filename changes whenever the contents do, so these
+# can be cached forever.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The shell must never be cached, or a deploy stays invisible until someone
+# hard-refreshes.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+
+# A stale service worker is the one thing that can strand a visitor on an old
+# build. Browsers already bypass the HTTP cache for it, but say so explicitly.
+/sw.js
+  Cache-Control: no-cache
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Google sign-in opens a popup that has to talk back to this page, so the
+  # opener relationship must survive. `same-origin-allow-popups` keeps the
+  # cross-origin isolation benefit without breaking signInWithPopup.
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()

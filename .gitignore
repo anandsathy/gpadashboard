@@ -11,6 +11,10 @@ dist/
 coverage/
 *.tsbuildinfo
 
+# Wrangler / Cloudflare
+.wrangler/
+.dev.vars*
+
 # Editors
 .idea/
 .vscode/*

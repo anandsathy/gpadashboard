@@ -1,0 +1,29 @@
+{
+  // Cloudflare Workers (static assets) deployment.
+  //
+  // `name` must match the existing Worker this repository is connected to —
+  // renaming it here would deploy to a second, empty Worker rather than to the
+  // live one.
+  //
+  // Workers Builds runs a build command and then `npx wrangler deploy`, and the
+  // deploy step needs this file to know what to upload. Set the build command
+  // to `npm run build:dist` in the Cloudflare dashboard so `dist/` exists by
+  // the time it runs.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gpadashboard",
+  "compatibility_date": "2026-08-28",
+
+  "assets": {
+    "directory": "./dist/",
+
+    // The app routes on the hash (`#/classes`), so the server only ever sees
+    // `/` and every real file resolves on its own. This is belt and braces: any
+    // other path a link or a typo produces still lands on the app instead of a
+    // bare 404.
+    "not_found_handling": "single-page-application"
+  }
+
+  // No `main` and no `assets.binding` on purpose: there is no Worker script
+  // here, only static files. `binding` is only valid alongside `main`, and
+  // including it fails validation on an assets-only Worker.
+}
