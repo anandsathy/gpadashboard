@@ -80,8 +80,11 @@ it is why running `npm run build` produces a diff:
 **After changing anything in `app/`, run `npm run build` and commit the result** — otherwise the
 published site keeps serving the previous version.
 
-If you would rather Pages built from source itself, set **Settings → Pages → Source** to
-*GitHub Actions*; `.github/workflows/deploy.yml` is already written and will take over.
+If you would rather Pages built from source itself, `.github/workflows/deploy.yml` is already
+written. It is **manual-trigger only** — set **Settings → Pages → Source** to *GitHub Actions*
+first, then run it from the Actions tab (or add a `push:` trigger back to it). Without that setting
+`actions/deploy-pages` fails with a 404, so it stays opt-in rather than failing on every push to a
+repository that publishes another way.
 
 ### Cloudflare Workers
 
